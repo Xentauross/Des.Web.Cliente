@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Seleccionar imagen</title>
+  </head>
+
+  <body>
+    <select id="selectorAnimal">
+      <option value="">Seleccione una imagen</option>
+      <option value="img/animal1.jpg">Mapache</option>
+      <option value="img/animal2.jpg">Suricato</option>
+      <option value="img/animal3.jpg">Tigre</option>
+    </select>
+
+    <img
+      id="imagenMostrada"
+      src=""
+      style="margin-top: 15px; max-width: 300px; display: block"
+    />
+
+    <script>
+      const selector = document.getElementById("selectorAnimal");
+      const imagen = document.getElementById("imagenMostrada");
+
+      selector.onchange = function () {
+        imagen.src = this.value;
+      };
+    </script>
+  </body>
+</html>
