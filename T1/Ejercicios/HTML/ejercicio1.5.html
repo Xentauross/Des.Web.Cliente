@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cambio de estilo</title>
+  </head>
+  <body>
+    <div id="idTexto">Modificar el estilo de texto</div>
+
+    <select name="negrita" id="idNegrita" onchange="nuevoEstilo()">
+      <option value="normal">Normal</option>
+      <option value="bold">Negrita</option>
+    </select>
+
+    <select name="cursiva" id="idCursiva" onchange="nuevoEstilo()">
+      <option value="normal">Normal</option>
+      <option value="italic">Cursiva</option>
+    </select>
+  </body>
+  <script>
+    function nuevoEstilo() {
+      const pesoFuente = document.getElementById("idNegrita").value;
+      const estiloFuente = document.getElementById("idCursiva").value;
+      const elementoTexto = document.getElementById("idTexto");
+      elementoTexto.style.fontWeight = pesoFuente;
+      elementoTexto.style.fontStyle = estiloFuente;
+    }
+  </script>
+</html>
