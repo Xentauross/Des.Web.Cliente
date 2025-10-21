@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Días hasta Navidad</title>
+</head>
+
+<body>
+    <h2>Días hasta Navidad 🎄</h2>
+    <p id="resultado"></p>
+
+    <script>
+        const hoy = new Date();
+        let navidad = new Date(hoy.getFullYear(), 11, 25); // Navidad este año
+        if (hoy > navidad) navidad = new Date(hoy.getFullYear() + 1, 11, 25); // si ya pasó, usamos próxima Navidad
+
+        // restamos fechas en milisegundos y convertimos a días y se redonde para arriba 
+        const dias = Math.ceil((navidad - hoy) / (1000 * 60 * 60 * 24));
+
+        document.getElementById("resultado").textContent = "Faltan " + dias + " días para Navidad.";
+    </script>
+</body>
+
+</html>

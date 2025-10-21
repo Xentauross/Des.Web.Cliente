@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Adivina el Número</title>
+</head>
+
+<body>
+    <h2>Juego: Adivina el Número</h2>
+    <button onclick="jugar()">Jugar</button>
+    <p id="resultado"></p>
+
+    <script>
+        function jugar() {
+            // 1️⃣ Generamos un número aleatorio entre 1 y 10
+            const numeroSecreto = Math.floor(Math.random() * 10) + 1;
+
+            // 2️⃣ Pedimos al usuario que ingrese un número aproximado
+            let intento = parseInt(prompt("Adivina el número (entre 1 y 10):"));
+
+            // 3️⃣ Comprobamos si el número ingresado coincide con el número secreto
+            if (intento === numeroSecreto) {
+                document.getElementById("resultado").textContent = "¡Buen trabajo! 🎉";
+            } else {
+                document.getElementById("resultado").textContent = `No coincide. El número era ${numeroSecreto}.`;
+            }
+        }
+    </script>
+</body>
+
+</html>
