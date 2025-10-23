@@ -1,4 +1,4 @@
 let original = "JavaScript es un lenguaje de programación muy popular.";
 let extraida = original.substring(6, 20);
-original = document.getElementById("original").textContent;
-extraida = document.getElementById("extraida").textContent;
+document.getElementById("original").textContent = "Texto original: " + original;
+document.getElementById("resultado").textContent = "Cadena extraída: " + extraida;
