@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Conversión de Temperaturas</title>
+</head>
+
+<body>
+    <h2>Conversión de Temperaturas</h2>
+
+    <input type="number" id="c" placeholder="Número en Celsius">
+    <input type="number" id="f" placeholder="Número en Fahrenheit">
+    <button id="btnconversion" onclick="convertir()">Convertir</button>
+
+    <p id="resultado1"></p>
+    <p id="resultado2"></p>
+
+    <script>
+        // Función que convierte de Celsius a Fahrenheit
+        function celsiusAFahrenheit(c) {
+            return (c * 9 / 5) + 32;
+        }
+
+        // Función que convierte de Fahrenheit a Celsius
+        function fahrenheitACelsius(f) {
+            return (f - 32) * 5 / 9;
+        }
+
+        // Función que se ejecuta al pulsar el botón
+        function convertir() {
+            // Obtenemos los valores de los inputs
+            let c = document.getElementById('c').value;
+            let f = document.getElementById('f').value;
+
+            // Convertimos los valores a número
+            c = parseFloat(c);
+            f = parseFloat(f);
+
+            // Calculamos los resultados solo si hay valores
+            let resultado1 = '';
+            let resultado2 = '';
+
+            if (!isNaN(c)) {
+                resultado1 = `${c} °C es ${celsiusAFahrenheit(c)} °F`;
+            }
+            else
+                resultado1 = "No hay valor en Celcius"
+
+            if (!isNaN(f)) {
+                resultado2 = `${f} °F es ${fahrenheitACelsius(f)} °C`;
+            }
+            else
+                resultado2 = "No hay valor en Fahrenheit"
+
+            // Mostramos los resultados
+            document.getElementById('resultado1').textContent = resultado1;
+            document.getElementById('resultado2').textContent = resultado2;
+        }
+    </script>
+</body>
+
+</html>

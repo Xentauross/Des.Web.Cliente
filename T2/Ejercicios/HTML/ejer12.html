@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mostrar URL del sitio web</title>
+</head>
+
+<body>
+    <h2>Obtener la URL actual</h2>
+
+    <p id="resultado"></p>
+
+    <script>
+        // Obtenemos la URL actual
+        let urlActual = document.URL;
+
+        // Mostramos la URL en pantalla
+        document.getElementById('resultado').textContent = `La URL actual es: ${urlActual}`;
+    </script>
+</body>
+
+</html>
