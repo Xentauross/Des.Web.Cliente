@@ -18,7 +18,7 @@ function palabra_busqueda(texto, palabra) {
 }
 
 // Ejemplos de frases donde buscaremos las palabras
-const fr1 = "El zorro marrón zorro mamón";
+const fr1 = "El zorro marrón zorro Ramón";
 const fr2 = "aa, bb, aa";
 
 // Llamamos a la función con cada frase y palabra a buscar
