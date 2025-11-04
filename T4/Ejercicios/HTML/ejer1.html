@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de imagen</title>
+</head>
+
+<body>
+    <header>
+        <h1>Cambio de imagen</h1>
+    </header>
+
+    <img id="img" src="/T4/Ejercicios/HTML/img/imagen.jpg" onmousedown=" cambiarImagen()" onmouseup="cambiarImagen2()"
+        alt="Imagen 1" width="300">
+</body>
+<script>
+
+    function cambiarImagen() {
+        const imagen = document.getElementById('img');
+        imagen.src = "/T4/Ejercicios/HTML/img/imagen2.png";
+    }
+    function cambiarImagen2() {
+        const imagen = document.getElementById('img');
+        imagen.src = "/T4/Ejercicios/HTML/img/imagen.jpg";
+    }
+</script>
+
+</html>
