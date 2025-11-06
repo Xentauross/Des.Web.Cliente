@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de imagen</title>
+</head>
+
+<body>
+    <button id="fondo" onclick="pulsarRaton()" onkeydown="pulsaTecla()" onmousemove="moverRaton()"
+        style="width:20%; height: 20vh;  border:1px solid black; margin: 40vh; background-color: white;">
+    </button>
+</body>
+<script>
+
+    function pulsarRaton() {
+        const bgColor = document.getElementById('fondo');
+        bgColor.style.backgroundColor = "#FFFF00";
+    }
+
+    function pulsaTecla() {
+        const bgColor = document.getElementById('fondo');
+        bgColor.style.backgroundColor = "blue";
+    }
+
+    function moverRaton() {
+        const bgColor = document.getElementById('fondo');
+        bgColor.style.backgroundColor = "white";
+    }
+
+</script>
+
+</html>
