@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de imagen</title>
+</head>
+
+<body>
+    <header>
+        <h1>Informacion de imagen de imagen</h1>
+    </header>
+
+    <img src="/T4/Ejercicios/HTML/img/imagen.jpg" onmouseover="infoImagen(this)" width="300">
+
+    <img src="/T4/Ejercicios/HTML/img/imagen2.png" onmouseover="infoImagen(this)" width="300">
+
+</body>
+<script>
+    /**
+     * Asigna la URL de la imagen como su atributo 'title'.
+     * Cuando el usuario pasa el ratón por encima de la imagen, verá su ruta/URL.
+     *
+     * @param {HTMLElement} img - La referencia al elemento de la imagen (<img>)
+     * sobre el cual se ha disparado el evento (generalmente 'this' desde HTML).
+     */
+    function infoImagen(img) {
+
+        // 1. Obtiene la URL de la fuente (source) de la imagen.
+        const url = img.src;
+
+        // 2. Asigna esa URL a la propiedad 'title' de la imagen.
+        // El 'title' se muestra como un tooltip nativo del navegador al pasar el ratón.
+        img.title = url;
+    }
+
+</script>
+
+</html>

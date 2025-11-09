@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click derecho</title>
+</head>
+
+<body >
+    <h1>Haz click con el boton derecho del raton</h1>
+</body>
+<script>
+
+document.addEventListener('contextmenu', function(evento) {
+  // 1. Evita que aparezca el menú contextual (el menú del clic derecho)
+evento.preventDefault(); 
+});
+
+</script>
+
+</html>

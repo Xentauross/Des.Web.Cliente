@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click derecho</title>
+</head>
+
+<body>
+
+  <h1>Haz click con el boton del ratón</h1>
+
+  <p id="resultado"></p>
+</body>
+<script>
+
+  const elementoResultado = document.getElementById('resultado');
+
+  document.addEventListener('mousedown', function (evento) {
+    let mensaje = '';
+
+    // 1. Determina qué botón del ratón se ha pulsado
+    // El valor del boton izquierdo es 0 y el del botón derecho es 2  
+    switch (evento.button) {
+      case 0:
+        mensaje = '¡Has pulsado el Botón IZQUIERDO!';
+        break;
+      case 2:
+        mensaje = '¡Has pulsado el Botón DERECHO!';
+        break;
+    }
+    // 2. Muestra el mensaje correspondiente en el elemento con id "resultado"
+    elementoResultado.textContent = mensaje;
+
+  });
+
+
+</script>
+
+</html>

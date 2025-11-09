@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecla pulsada</title>
+</head>
+
+<body>
+    <h1>Detectar tecla pulsada</h1>
+    <p>Pulsa cualquier tecla para ver la información:</p>
+    <p id="info"></p>
+
+    <script>
+        // Cuando se presiona una tecla
+        document.addEventListener("keydown", function (event) {
+            let mensaje = "Has pulsado la tecla: " + event.key;
+
+            // Comprobamos si se usa con teclas modificadoras
+            if (event.altKey) {
+                mensaje += " + Alt";
+            }
+            if (event.shiftKey) {
+                mensaje += " + Shift";
+            }
+            if (event.ctrlKey) {
+                mensaje += " + Control";
+            }
+
+            // Mostramos el resultado
+            document.getElementById("info").textContent = mensaje;
+        });
+    </script>
+</body>
+
+</html>
