@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+
+<body>
+    <header>
+        <h1>Contador de Palabras</h1>
+    </header>
+
+    <button onclick="location.reload()">Reiniciar</button>
+    <p id="resultado"></p>
+
+</body>
+<script>
+    const frase = prompt('Introduce un texto:');
+
+    const fraseSinSignos = frase.replace(/[.,;:!?¿¡]/g, '');
+
+    const fraseMin = fraseSinSignos.toLowerCase();
+
+    const palabras = fraseMin.split(' ');
+
+    const contador = new Map();
+    palabras.forEach((palabra) => {
+        if (contador.has(palabra)) {
+
+            contador.set(palabra, contador.get(palabra) + 1);
+
+        } else {
+            contador.set(palabra, 1);
+        }
+    });
+
+    console.log(contador);
+
+    let resultado = "";
+    contador.forEach((valor, clave) => {
+        resultado += clave + ": " + valor + " vez/veces<br>";
+    });
+
+    document.getElementById('resultado').innerHTML = resultado;
+</script>
+
+</html>
