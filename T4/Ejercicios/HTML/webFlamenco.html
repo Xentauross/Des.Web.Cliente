@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Palos del Flamenco</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #b22222;
+        }
+
+        select,
+        button,
+        input {
+            margin: 6px 0;
+            padding: 6px;
+        }
+
+        .box {
+            background: white;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Palos del Flamenco</h1>
+
+    <!-- OPCIÓN 1 -->
+    <h2>1. Seleccionar palo y ver todos los datos</h2>
+    <select id="selectPalo">
+        <option value="">-- Selecciona un palo --</option>
+        <option>Soleá</option>
+        <option>Alegrías</option>
+        <option>Bulerías</option>
+        <option>Tientos</option>
+        <option>Tangos</option>
+        <option>Seguiriyas</option>
+        <option>Fandangos</option>
+    </select>
+    <button onclick="mostrarDatos()">Mostrar</button>
+
+    <div id="resultado1" class="box"></div>
+
+    <!-- OPCIÓN 2 -->
+    <h2>2. Pedir un dato concreto de un palo</h2>
+
+    <label>Palo:</label><br>
+    <select id="selectPalo2">
+        <option value="">-- Selecciona un palo --</option>
+        <option>Soleá</option>
+        <option>Alegrías</option>
+        <option>Bulerías</option>
+        <option>Tientos</option>
+        <option>Tangos</option>
+        <option>Seguiriyas</option>
+        <option>Fandangos</option>
+    </select><br>
+
+    <label>Dato que deseas:</label><br>
+    <select id="datoInput">
+        <option value="compas">Compás</option>
+        <option value="tempo">Tempo</option>
+        <option value="letra">Tipo de letra</option>
+    </select>
+    <br>
+
+    <button onclick="mostrarDatoEspecifico()">Consultar</button>
+
+    <div id="resultado2" class="box"></div>
+
+    <script>
+        // ============================
+        // BASE DE DATOS FLAMENCA
+        // ============================
+        // Objeto que contiene los palos del flamenco y su información
+        const palos = {
+            "Soleá": {
+                compas: "12 tiempos",
+                tempo: "Lento",
+                letra: "Melancólicas, sobre la soledad y el dolor"
+            },
+            "Alegrías": {
+                compas: "12 tiempos",
+                tempo: "Vivo",
+                letra: "Temas alegres sobre fiesta y naturaleza"
+            },
+            "Bulerías": {
+                compas: "12 tiempos con acentos irregulares",
+                tempo: "Muy rápido",
+                letra: "Improvisación, ritmo y energía"
+            },
+            "Tientos": {
+                compas: "4 tiempos",
+                tempo: "Lento",
+                letra: "Cante profundo y expresivo"
+            },
+            "Tangos": {
+                compas: "4 tiempos",
+                tempo: "Rítmico y bailable",
+                letra: "Desenfadada y festiva"
+            },
+            "Seguiriyas": {
+                compas: "12 tiempos con acentos marcados",
+                tempo: "Lento",
+                letra: "Letras trágicas sobre muerte y sufrimiento"
+            },
+            "Fandangos": {
+                compas: "Libre al inicio, luego con ritmo",
+                tempo: "Variable",
+                letra: "Temas variados: amor, vida cotidiana"
+            }
+        };
+
+        // ============================
+        // OPCIÓN 1: MOSTRAR TODOS LOS DATOS
+        // ============================
+        function mostrarDatos() {
+            // Obtener el palo seleccionado del menú desplegable
+            const palo = document.getElementById("selectPalo").value;
+
+            // Obtener el div donde se mostrará el resultado
+            const salida = document.getElementById("resultado1");
+
+            // Si el usuario no seleccionó nada, avisamos
+            if (!palo) {
+                salida.innerHTML = "Selecciona un palo.";
+                return;
+            }
+
+            // Se obtienen los datos del palo seleccionado desde el objeto 'palos'
+            const datos = palos[palo];
+
+            // Se muestra todo formateado con HTML
+            salida.innerHTML = `
+            <strong>Palo:</strong> ${palo}<br>
+            <strong>Compás:</strong> ${datos.compas}<br>
+            <strong>Tempo:</strong> ${datos.tempo}<br>
+            <strong>Tipo de letra:</strong> ${datos.letra}
+        `;
+        }
+
+        // ============================
+        // OPCIÓN 2: MOSTRAR UN SOLO DATO
+        // ============================
+        function mostrarDatoEspecifico() {
+
+            // Obtener el palo seleccionado en el segundo menú
+            const palo2 = document.getElementById("selectPalo2").value;
+
+            // Obtener el tipo de dato pedido: compás, tempo o letra
+            const dato = document.getElementById("datoInput").value;
+
+            // Div donde se mostrará el resultado
+            const salida = document.getElementById("resultado2");
+
+            // Comprobar si existe el palo en la base de datos
+            if (!palos[palo2]) {
+                salida.innerHTML = "Ese palo no existe o está mal escrito.";
+                return;
+            }
+
+            // Mostrar el dato pedido formateado
+            salida.innerHTML = `
+            <strong>${dato.toUpperCase()} de ${palo2}:</strong> 
+            ${palos[palo2][dato]}
+        `;
+        }
+    </script>
+
+</body>
+
+</html>
