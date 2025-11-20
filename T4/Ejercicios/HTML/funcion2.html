@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operaciones</title>
+</head>
+
+<body>
+    <header>
+        <h1>Operaciones</h1>
+    </header>
+
+
+</body>
+<script>
+
+    //Funcion para sumar
+    function suma(a, b) {
+        return a + b;
+    }
+
+    //funcion para restar 
+    function resta(a, b) {
+        return a - b;
+    }
+
+    function multiplicar(a, b) {
+        return a * b;
+    }
+
+    function sumaMul(a, b) {
+        return (a + b) + (a * b);
+    }
+
+    function Operar(a, b, operacion) {
+        return operacion(a, b);
+    }
+
+    console.log(Operar(2, 3, suma));
+    console.log(Operar(2, 3, resta));
+    console.log(Operar(2, 3, multiplicar));
+    console.log(Operar(2, 3, sumaMul));
+
+</script>
+
+</html>

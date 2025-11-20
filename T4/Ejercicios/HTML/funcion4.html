@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anidados</title>
+</head>
+
+<body>
+    <header>
+        <h1>Anidados</h1>
+    </header>
+
+
+</body>
+<script>
+
+    const fs = {
+        carpeta1: {
+            archivo1: "contenido1",
+            archivo2: "contenido2",
+            subcarpeta: {
+                archivo3: "contenido3"
+            }
+        },
+        carpeta2: {
+            archivo4: "contenido4"
+        }
+    };
+
+
+    function anidar(obj, rutaActual = "") {
+
+        let organizado = {}
+
+        for (let clave in obj) {
+            let valor = obj[clave];
+            if (typeof valor === "objet") {
+                let subArcivos = anidar(valor, rutaActual + clave + "/");
+
+                Object.assign(organizado, subArcivos);
+            } else {
+
+                organizado[rutaActual + clave] = valor;
+            }
+        }
+        return organizado;
+    }
+
+    console.log(anidar(fs));
+
+
+
+</script>
+
+</html>

@@ -15,21 +15,24 @@
 
 </body>
 <script>
+
     //Funcion para crear usuario
     function crearUsuario(usuario) {
 
-        const { nombre = "Juan", edad = 20, pais = "España" } = usuario || {};
+        // Desestructuración del objeto "usuario".
+        // Si "usuario" es null o undefined, se usa {} para evitar errores (usuario || {}).
+        // Cada propiedad tiene un valor por defecto: "desconocido".
+        const { nombre = "desconocido", edad = "desconocido", pais = "desconocido" } = usuario || {};
 
-        const finalNombre = nombre || "desconocido";
-        const finalEdad = edad || "desconocido";
-        const finalPais = pais || "desconocido";
-
-        return `${finalNombre}, ${finalEdad} años, ${finalPais}`;
+        // Devuelve una cadena con los datos del usuario formateados.
+        return `${nombre}, ${edad} años, ${pais}`;
     }
+    // Se crea un usuario sin la propiedad "edad"
+    const usuario1 = { nombre: "Pepe", pais: "Portugal" }
 
-    const usuario1 = { nombre: "Pepe", edad: 23, pais: "Portugal" }
-
+    // Imprime
     console.log(crearUsuario(usuario1));
+
 </script>
 
 </html>

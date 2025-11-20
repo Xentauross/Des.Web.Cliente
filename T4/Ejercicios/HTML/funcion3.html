@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplanar Array</title>
+</head>
+
+<body>
+    <header>
+        <h1>Aplanar Array</h1>
+    </header>
+
+
+</body>
+<script>
+
+    // Función recursiva para "aplanar" un array anidado
+    function aplanar(arr) {
+
+        // Creamos un array vacío donde guardaremos los elementos planos
+        let resultado = []
+
+        // Recorremos cada elemento del array recibido
+        for (let valor of arr) {
+
+            // Si el elemento es un array
+            if (Array.isArray(valor)) {
+
+                // Llamamos recursivamente a 'aplanar' para ese sub-array
+                // y usamos el spread '...' para añadir todos los elementos de forma plana
+                resultado.push(...aplanar(valor));
+
+            } else {
+                // Si el elemento no es array, lo añadimos directamente al resultado
+                resultado.push(valor);
+            }
+        }
+
+        // Devolvemos el array ya aplanado
+        return resultado;
+    }
+
+    // Probamos la función con un array que tiene sub-arrays anidados
+    console.log(aplanar([1, [2, [3, 4]], 5]));
+
+
+
+</script>
+
+</html>
