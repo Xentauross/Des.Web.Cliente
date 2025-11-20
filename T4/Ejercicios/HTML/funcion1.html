@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear usuario</title>
+</head>
+
+<body>
+    <header>
+        <h1>Crear Usuario</h1>
+    </header>
+
+
+</body>
+<script>
+    //Funcion para crear usuario
+    function crearUsuario(usuario) {
+
+        const { nombre = "Juan", edad = 20, pais = "España" } = usuario || {};
+
+        const finalNombre = nombre || "desconocido";
+        const finalEdad = edad || "desconocido";
+        const finalPais = pais || "desconocido";
+
+        return `${finalNombre}, ${finalEdad} años, ${finalPais}`;
+    }
+
+    const usuario1 = { nombre: "Pepe", edad: 23, pais: "Portugal" }
+
+    console.log(crearUsuario(usuario1));
+</script>
+
+</html>

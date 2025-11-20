@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        .rojo {
+            color: red;
+            font-weight: bold;
+        }
+
+        .verde {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Gestión de DAW</h2>
+
+    <ul id="listaDaw"></ul>
+
+    <hr>
+    <button onclick="contarModulos()">Cuántos modulos hay</button>
+    <button onclick="mostrarModulos()">Ver todos los modulos</button>
+    <button onclick="mostrarModulosAbre()">Modulo abreviado</button>
+    <button onclick="mostrarModulosCompleto()"> Modulo nombre completo</button>
+    <button onclick="consultarModulo()"> Consulta modulo</button>
+    <button onclick="modificarModulo()">Modificar Modulo</button>
+    <button onclick="borrarModulo()">Borar Modulo</button>
+
+
+    <p id="info"></p>
+
+    <script>
+        "use strict"; // obliga a declarar las variables correctamente
+
+        //  1. JSON inicial con Modulos (clave → valor)
+        const dawJSON = {
+            "DEC": "Desarrollo entorno cliente",
+            "DES": "Desarrollo entorno servidor",
+            "PO": "Python",
+            "Ipe 2": "Itinerario personal 2",
+        };
+
+        //  2. Convertimos el JSON en un Map (clave, valor)
+        let dawMap = new Map(Object.entries(dawJSON));
+
+        //  3. Función para contar cuántos modulos hay
+        function contarModulos() {
+            document.getElementById("info").textContent = `Hay ${dawMap.size} modulos registrados.`; // Map.size devuelve la cantidad de entradas
+        }
+
+        //  4. Función para mostrar todos las modulos
+        function mostrarModulos() {
+            const lista = document.getElementById("listaDaw"); // Buscamos el <ul> del HTML
+            lista.innerHTML = ""; // Limpiamos la lista antes de volver a dibujarla
+            // Recorremos el Map y creamos un <li> por cada modulo
+            dawMap.forEach((modulo, abreviado) => {
+                const li = document.createElement("li"); // Creamos el elemento de la lista
+                li.textContent = `${abreviado}: ${modulo}`; // Le ponemos el texto
+                lista.appendChild(li); // Lo añadimos al <ul>
+            });
+            document.getElementById("info").textContent = ""; // Limpiamos cualquier mensaje previo
+        }
+
+        //  5. Función para mostrar todos las modulos abreviados
+        function mostrarModulosAbre() {
+            const lista = document.getElementById("listaDaw"); // Buscamos el <ul> del HTML
+            lista.innerHTML = ""; // Limpiamos la lista antes de volver a dibujarla
+            // Recorremos el Map y creamos un <li> por cada modulo
+            dawMap.forEach((modulo, abreviado) => {
+                const li = document.createElement("li"); // Creamos el elemento de la lista
+                li.textContent = `${abreviado}`; // Le ponemos el texto
+                lista.appendChild(li); // Lo añadimos al <ul>
+            });
+            document.getElementById("info").textContent = ""; // Limpiamos cualquier mensaje previo
+        }
+
+        //  6. Función para mostrar todos las modulos abreviados
+        function mostrarModulosCompleto() {
+            const lista = document.getElementById("listaDaw"); // Buscamos el <ul> del HTML
+            lista.innerHTML = ""; // Limpiamos la lista antes de volver a dibujarla
+            // Recorremos el Map y creamos un <li> por cada modulo
+            dawMap.forEach((modulo, abreviado) => {
+                const li = document.createElement("li"); // Creamos el elemento de la lista
+                li.textContent = `${modulo}`; // Le ponemos el texto
+                lista.appendChild(li); // Lo añadimos al <ul>
+            });
+            document.getElementById("info").textContent = ""; // Limpiamos cualquier mensaje previo
+        }
+        // 7. Función para consultar un modulo
+        function consultarModulo() {
+            const modulo = prompt("Introduce el nombre de modulo a consultar:"); // Pedimos el nombre
+            if (!isNaN(modulo)) { // Comprobamos si existe
+                alert(`Si está ${modulo}.`); // Mensaje de confirmación
+            } else {
+                alert("Este modulo no existe."); // Mensaje si no la encuentra
+            }
+        }
+
+        // 8. Función para añadir una nuevo modulo
+        function modificarModulo() {
+            const abreviado = prompt("Introduce el nombre abreviado del modulo a modifica:"); // Pedimos el nombre
+            if (dawMap.has(abreviado)) { // Comprobamos si existe
+                alert(`Existe.`)
+                const nuevo = prompt("Introduce el nombre abreviado del modulo:")
+                dawMap.replace(abreviado, nuevo); // La borramos
+                alert(`Se modifico ${nuevo}.`); // Mensaje de confirmación
+                mostrarModulos(); // Actualizamos la lista
+            } else {
+                alert("Ese modulo no existe."); // Mensaje si no la encuentra
+            }
+        }
+
+        // 9. Función para borrar una modulo
+        function borrarModulo() {
+            const abreviado = prompt("Introduce el nombre abreviado del modulo a borrar:"); // Pedimos el nombre
+            if (dawMap.has(abreviado)) { // Comprobamos si existe
+                dawMap.delete(abreviado); // La borramos
+                alert(`Se borró ${abreviado}.`); // Mensaje de confirmación
+                mostrarModulos(); // Actualizamos la lista
+            } else {
+                alert("Ese modulo no existe."); // Mensaje si no la encuentra
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Clase en HTML</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let a = prompt("Introduce un numero:");
+    let n = prompt("Introduce la cantidad de numeros a sumar:");
+
+    function Sumatorio(a, n) {
+        return a * n;
+    }
+    console.log(Sumatorio(a, n));
+
+    let z = prompt("Introduce un numero para multiplicar la suma:");
+
+    function Sumatorio2(a, n, z) {
+        return Sumatorio(a, n) * z;
+    }
+    console.log(Sumatorio2(a, n, z));
+</script>
+
+</html>
