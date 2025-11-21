@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista array</title>
+</head>
+
+<body>
+    <header>
+        <h1>Lista array</h1>
+    </header>
+
+
+</body>
+<script>
+
+    const fs = {
+        carpeta1: {
+            archivo1: "contenido1",
+            archivo2: "contenido2",
+            subcarpeta: {
+                archivo3: "contenido3"
+            }
+        },
+        carpeta2: {
+            archivo4: "contenido4"
+        }
+    };
+
+    function listarArchivos(obj) {
+        let resultado = [];
+
+        for (let clave in obj) {
+            let valor = obj[clave];
+
+            // Si es un objeto → seguir buscando dentro
+            if (typeof valor === "object") {
+                resultado.push(...listarArchivos(valor));
+            } else {
+                // Si NO es objeto → es un archivo → guardar su nombre
+                resultado.push(clave);
+            }
+        }
+
+        return resultado;
+    }
+
+    console.log(listarArchivos(fs));
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,229 @@
+/* Estilo global para todos los elementos */
+* {
+    color: white; /* Define el color de texto como blanco */
+    font-family: Arial, Helvetica, sans-serif; /* Establece una fuente sans-serif */
+    font-size: 1.02em; /* Tamaño base del texto */
+    background-color: transparent; /* Fondo transparente */
+}
+
+body{
+    background-color: #1a1a1a;
+}
+/* ========== ENCABEZADO ========== */
+
+/* Estilos para el título principal del encabezado */
+header h1 {
+    color: #00b1a5; /* Color verde oscuro */
+    font-size: 2em; /* Tamaño de fuente grande */
+}
+/* Estilos para los párrafos dentro del encabezado */
+header h3 {
+    padding: 2px; /* Agrega espacio interno */
+    color: #00b1a5; /* Color verde oscuro */
+    margin-top: -2px; /* Reducido espaciado superior */
+}
+
+/* ========== MENÚ ========== */
+/* Estilo general del menú de navegación */
+nav {
+    font-size: 1em; /* Tamaño más grande para el texto */
+    border-bottom: #007d75 solid 3px; /* Borde verde oscuro */
+    margin-bottom: 1rem;
+}
+
+/* Estilos para los enlaces dentro del menú */
+nav a {
+    color: #00b1a5; /* Texto blanco */
+    font-weight: 700;
+    text-decoration: none; /* Sin subrayado */
+    /* Transición para el color del texto */
+    transition: color 0.3s ease-in-out;
+}
+
+nav a:hover {
+    color: #00e0d0; /* Color verde claro al pasar el ratón */
+}
+
+.menuTema {
+    padding: 10px 120px;
+    margin-right: 5px;
+    margin-bottom: -10px;
+    background-color: #333;
+    border: 2px solid #007d75;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    font-weight: 500;
+    cursor: pointer;
+    /* Transición para el color de fondo y el borde */
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.menuTema:hover {
+    background-color: #2d4740;
+}
+
+.menuTema.activo {
+    background-color: #1f4f6b; /* Tono azul para el activo */
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    /* Transición para el color de fondo y el borde */
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.menuTema.activo a {
+    color: white;
+    text-decoration: none;
+}
+
+/*===========Ejercicios ==========*/
+
+.contenidoInicios, .contenido1, .contenido2, .contenido3, .contenido4 {
+    margin: 5px;
+    border-radius: 8px; /* Bordes redondeados */
+    border: 2px solid #007d75; /* Borde verde oscuro */
+}
+
+.contenidoInicio h2,.contenido1 h2, .contenido2 h2, .contenido3 h2, .contenido4 h2 {
+    color: #00b1a5;
+    font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+
+}
+
+li {
+    list-style: none;
+    display: grid; /* Diseño en cuadrícula */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Diseño responsivo */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 2px solid #007d75; /* Borde verde oscuro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    text-align: center; /* Alineación de texto centrada */;
+    align-items: center; /* Alineación vertical centrada */
+    padding: 10px; /* Espaciado interno */
+    margin: 10px; /* Espaciado entre elementos */
+    background-color: #333; /* Fondo gris oscuro */
+    transition: background-color 0.2s, transform 0.2s; /* Añadido transición para transformación */
+    cursor: pointer;
+}
+
+/* Nuevo estilo para el efecto hover en los elementos de la lista */
+li:hover {
+    background-color: #1f4f6b;; /* Un gris un poco más claro al pasar el ratón */
+    transform: translateY(-3px); /* Un ligero desplazamiento hacia arriba */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+.listas, a{
+    text-decoration: none;
+    text-align: center; /* Alineación centrada */
+}
+
+div .listas{
+    display: grid; /* Diseño en cuadrícula */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Diseño responsivo */
+    gap: 10px; /* Espacio entre elementos */
+}
+
+section.contenidoInicio{
+    display: grid; /* Diseño en cuadrícula */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Diseño responsivo */
+    gap: 10px; /* Espacio entre elementos */
+    justify-content: center; /* Alineación horizontal centrada */
+    margin: 0 auto; /* Centrado automático */
+    padding: 10px; /* Espaciado interno */
+    width: 98%; /* Ancho del contenido */
+    height: 100%; /* Altura del 100% */
+    background-color: #333; /* Fondo gris oscuro */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 2px solid #007d75; /* Borde verde oscuro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    align-items: center; /* Alineación vertical centrada */
+    transition: box-shadow 0.3s ease-in-out; /* Transición para hover */
+}
+
+section.contenidoInicio:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada al pasar el ratón */
+}
+
+
+/*==========Fotter==========*/
+
+footer {
+    border-top: #007d75 solid 3px; /* Borde verde oscuro */
+}
+/* ========== POSICIONAMIENTO ========== */
+
+/* Configuración general del cuerpo */
+body {
+    height: 100%; /* Altura completa */
+}
+
+/* Configuración del HTML */
+html {
+    margin: auto; /* Centrado automático */
+    height: 100%; /* Altura del 100% */
+    width: 100%; /* Ancho del 100% */
+}
+
+/* Estilo para el encabezado principal */
+header {
+    width: 100%; /* Ancho completo */
+    display: flex; /* Alineación horizontal */
+    flex-direction: column; /* Alineación vertical */
+    align-items: center; /* Alineación vertical centrada */
+}
+/* ========== ESTRUCTURA PRINCIPAL ========== */
+
+/* Contenedor general */
+body {
+    /* Diseño en línea horizontal */
+    width: 100%; /* Ancho completo */
+    margin: 0; /* Sin márgenes */
+}
+
+/* Estilo para el área principal */
+main {
+    padding: 5px 5px 5px 5px; /* Espaciado a la izquierda */
+    display: flex; /* Alineación horizontal */
+    gap: 10px; /* Separación entre elementos */
+    width: 98%; /* Ancho principal */
+    height: 65%; /* Altura del 100% */
+}
+
+/* Menu de navegación */
+nav {
+    padding: 10px; /* Espaciado interno */
+    display: flex; /* Alineación en línea horizontal */
+    justify-content: space-around; /* Espaciado entre elementos */
+}
+
+/* Estilo para el contenido principal */
+section{
+    width: 100%; /* Ancho del contenido */
+    height: 100%; /* Altura del 100% */
+    padding: 10px; /* Espaciado interno */
+    margin-left: auto; /* Centrado automático */
+}
+
+
+/* ========== PIE DE PÁGINA ========== */
+
+/* Configuración general del pie de página */
+footer {
+    margin-top: 4em; /* Espaciado superior */
+    width: 100%; /* Ancho completo */
+    font-size: 0.7em; /* Tamaño pequeño */
+    display: flex; /* Diseño en línea horizontal */
+    justify-content: center; /* Alineación horizontal centrada */
+    align-items: center; /* Alineación vertical centrada */
+    color: #777777; /* Texto gris oscuro */
+}
+/* Estilo para los párrafos en el pie */
+footer p {
+    margin: auto; /* Centrado */
+    margin-top: 0.7em;
+    color: #555; /* Texto gris intermedio */
+    font-style: italic;
+}

@@ -11,6 +11,13 @@ body {
     background-color: #1a1a1a;
     width: 100%;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+html,
+body {
+    height: 100%;
 }
 
 /* ====== ENCABEZADO ====== */
@@ -70,8 +77,16 @@ main {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 95%;
+
+    width: 100%;
+    max-width: 3000px;
+    /* o el tamaño que quieras */
     margin: auto;
+    flex: 1;
+    padding: 20px;
+
+    /* CLAVE para repartir altura */
+    justify-content: stretch;
 }
 
 section {
@@ -81,6 +96,17 @@ section {
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.3s;
+
+    width: 100%;
+    max-width: 100%;
+    /* usa TODO el ancho del main */
+    height: 100%;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* el contenido empieza arriba */
 }
 
 section:hover {
@@ -92,6 +118,10 @@ section h2 {
     color: #00b1a5;
     text-align: center;
     margin-bottom: 1rem;
+    align-self: center;
+    /* se centra horizontalmente */
+    margin-top: 0;
+    /* se mantiene arriba */
 }
 
 section p {
