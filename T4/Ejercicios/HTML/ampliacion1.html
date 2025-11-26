@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1 </title>
+</head>
+
+<body>
+    <h2>Crea una función operar(a, b, callback) que reciba dos números y una función. Usa para realizar una operación
+        matemática.(Suma, RESTA, MULTIPLICACION)</h2>
+</body>
+<script>
+
+    // Funciones callback
+    function sumar(x, y) {
+        return x + y;
+    }
+
+    function restar(x, y) {
+        return x - y;
+    }
+
+    function multiplicar(x, y) {
+        return x * y;
+    }
+
+    // Función operar
+    function operar(a, b, callback) {
+        return callback(a, b);
+    }
+
+    // Ejemplos de uso
+    console.log(operar(10, 5, sumar));          // 15
+    console.log(operar(10, 5, restar));         // 5
+    console.log(operar(10, 5, multiplicar));    // 50
+
+</script>
+
+</html>

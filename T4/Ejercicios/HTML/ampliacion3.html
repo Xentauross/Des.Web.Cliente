@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Ejercicio 3 </title>
+</head>
+
+<body>
+    <h2>Usa una expresión de función para crear un validador que revise si una cadena contiene más de 10 caracteres.
+    </h2>
+</body>
+
+<script>
+
+    function comprobar(cadena) {
+        if (cadena.length > 10) {
+            console.log(cadena.length);
+            return true;
+        } else {
+            console.log(cadena.length);
+            return false;
+        }
+    }
+
+    console.log(comprobar("Hola mundo pepe")); // true
+    console.log(comprobar("Hola")); // false
+</script>
+
+</html>
