@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function dibujarTrianguloInvertido(altura) {
+        console.log(`Triángulo ${altura}`);
+        for (let i = 0; i < altura; i++) {
+            // Número de espacios es igual a la fila actual (i)
+            let espacios = ' '.repeat(i);
+            // Número de asteriscos es la altura menos la fila actual
+            let asteriscos = '*'.repeat(altura - i);
+
+            console.log(espacios + asteriscos);
+        }
+    }
+
+    // Llama a la función para dibujarla
+    dibujarTrianguloInvertido(5);
+</script>
+
+</html>
