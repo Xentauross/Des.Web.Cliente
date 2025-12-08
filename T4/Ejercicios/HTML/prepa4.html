@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Asincronía y Callbacks</title>
+</head>
+
+<body>
+    <h1>Ejercicio 4: Asincronía Simulada</h1>
+    <p>Abre la consola (F12) para ver el orden de llegada de las tareas.</p>
+    <div id="logs"></div>
+
+    <script>
+        // Función auxiliar para imprimir en pantalla (además de consola)
+        function logEnPantalla(texto) {
+            const div = document.getElementById("logs");
+            div.innerHTML += `<p>${texto}</p>`;
+        }
+
+        // --- FUNCIÓN PRINCIPAL ---
+        function procesarTareas(tareas, callbackFinal) {
+            let resultados = [];
+            let contadorCompletadas = 0;
+
+            // Recorremos el array de tareas
+            tareas.forEach(function (tarea) {
+
+                // Iniciamos el temporizador para CADA tarea
+                setTimeout(function () {
+
+                    // 1. Lógica cuando termina ESTA tarea específica:
+                    console.log(`Tarea ${tarea.id} completada`);
+                    logEnPantalla(`Tarea ${tarea.id} completada (${tarea.duracion}ms)`);
+
+                    // 2. Guardamos el ID en el orden de llegada
+                    resultados.push(tarea.id);
+
+                    // 3. Aumentamos el contador
+                    contadorCompletadas++;
+
+                    // 4. VERIFICACIÓN: ¿Han terminado todas?
+                    if (contadorCompletadas === tareas.length) {
+                        // ¡Sí! Llamamos al callback final con el array ordenado por llegada
+                        callbackFinal(resultados);
+                    }
+
+                }, tarea.duracion); // Aquí usamos el tiempo de cada tarea
+            });
+        }
+
+        // --- DATOS DE PRUEBA ---
+        const misTareas = [
+            { id: 'A', duracion: 3000 }, // Tarda 3 segundos
+            { id: 'B', duracion: 1000 }, // Tarda 1 segundo
+            { id: 'C', duracion: 2000 }  // Tarda 2 segundos
+        ];
+
+        console.log("Iniciando tareas...");
+        logEnPantalla("Iniciando tareas... espera...");
+
+        // --- EJECUCIÓN ---
+        procesarTareas(misTareas, (resultadoFinal) => {
+            console.log("--------------------");
+            console.log("¡Todas terminadas!");
+            console.log("Orden final:", resultadoFinal);
+
+            logEnPantalla("<strong>¡Todas terminadas! Orden final: " + resultadoFinal.join(", ") + "</strong>");
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio Recursividad</title>
+</head>
+
+<body>
+    <h1>Prueba de Recursividad</h1>
+    <p>Abre la consola (F12) para ver más detalles o mira el resultado aquí abajo:</p>
+
+    <p>La suma hasta 5 es: <strong id="resultado5"></strong></p>
+    <p>La suma hasta 0 es: <strong id="resultado0"></strong></p>
+    <p>La suma hasta 10 es: <strong id="resultado10"></strong></p>
+
+    <script>
+
+        // --- FUNCIÓN RECURSIVA ---
+        function sumarHasta(n) {
+            // 1. CASO BASE: ¿Cuándo paramos?
+            if (n <= 0) {
+                return 0;
+            }
+
+            // 2. PASO RECURSIVO: Sumamos n + la llamada con (n-1)
+            else {
+                return n + sumarHasta(n - 1);
+            }
+        }
+
+        // --- PRUEBAS ---
+        // Probamos con el ejemplo del enunciado (5)
+        let resultadoCinco = sumarHasta(5);
+        document.getElementById("resultado5").innerText = resultadoCinco;
+
+        // Probamos con 0
+        let resultadoCero = sumarHasta(0);
+        document.getElementById("resultado0").innerText = resultadoCero;
+
+        // Probamos con 10
+        let resultadoDiez = sumarHasta(10);
+        document.getElementById("resultado10").innerText = resultadoDiez;
+
+        console.log("Suma de 5:", resultadoCinco); // Debería dar 15
+    </script>
+</body>
+
+</html>

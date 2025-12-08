@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Funciones Anónimas y Arrow Functions</title>
+</head>
+
+<body>
+    <h1>Ejercicio 3: Callbacks y Arrow Functions</h1>
+    <p>Mira la consola (F12) para ver los detalles.</p>
+
+    <h3>Resultado:</h3>
+    <p id="pantallaResultado">Esperando...</p>
+
+    <script>
+
+        // 1. Definimos la función "Maestra"
+        // Esta función recibe el array y DOS funciones más como parámetros
+        function filtrarYTransformar(arr, filtro, transformacion) {
+            let nuevoArray = [];
+
+            // Recorremos el array original
+            for (let numero of arr) {
+
+                // PASO 1: Usamos la función 'filtro' para decidir
+                // filtro(numero) devolverá true o false
+                if (filtro(numero) === true) {
+
+                    // PASO 2: Si pasa el filtro, usamos la función 'transformacion'
+                    let numeroTransformado = transformacion(numero);
+
+                    // Guardamos el resultado
+                    nuevoArray.push(numeroTransformado);
+                }
+            }
+
+            return nuevoArray;
+        }
+
+        // --- EJECUCIÓN DEL EJERCICIO ---
+
+        const numerosEntrada = [1, 2, 3, 4, 5, 6];
+
+        // Llamamos a la función maestra pasándole las instrucciones con FLECHAS (=>)
+        const resultado = filtrarYTransformar(
+            numerosEntrada,
+            n => n % 2 === 0, // Esta es la función filtro (¿Es par?)
+            n => n * n        // Esta es la función transformación (Al cuadrado)
+        );
+
+        // Mostramos el resultado
+        console.log("Entrada:", numerosEntrada);
+        console.log("Salida:", resultado);
+
+        document.getElementById("pantallaResultado").innerText = "[ " + resultado.join(", ") + " ]";
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array y caracteres</title>
+</head>
+
+<body>
+    <h1>Array y caracterese</h1>
+    <label for="arrayPalabras">Introduce las palabras en el array</label>
+    <input type="text" id="arrayPalabras">
+    <button id="agregar">Guardar en el array</button>
+    <h3>Array guardado:</h3>
+    <p id="mostrarArray"></p>
+    <h3>Estadísticas de Vocales:</h3>
+    <p id="mostrarVocales">Total: 0</p>
+</body>
+<script>
+
+    let listaPalabras = [];
+
+    let estadisticasVocales = { total: 0 };
+
+    const inputUsuario = document.getElementById("arrayPalabras");
+    const boton = document.getElementById("agregar");
+    const mostrarResultado = document.getElementById("mostrarArray");
+    const mostrarEstadisticas = document.getElementById("mostrarVocales");
+
+
+    function agregarPalabra() {
+
+        //Se toma el valor introducido por el usuario
+        let palabraNueva = inputUsuario.value;
+
+        // Verificamos que no esté vacío para no guardar espacios en blanco
+        if (palabraNueva !== "") {
+
+            // Tomamos la 1ª letra y la hacemos Mayúscula
+            let primeraLetra = palabraNueva.charAt(0).toUpperCase();
+
+            // Tomamos el resto de la palabra (desde la posición 1 en adelante) y la hacemos minúscula
+            let restoPalabra = palabraNueva.slice(1).toLowerCase();
+
+            // Las unimos
+            let palabraFormateada = primeraLetra + restoPalabra;
+
+            // Llamamos a una función auxiliar que creamos abajo para contar
+            contarLasVocales(palabraFormateada);
+
+            // --- Guardar y Mostrar ---
+            listaPalabras.push(palabraFormateada);
+            mostrarResultado.innerText = listaPalabras.join(", ");
+
+            // Mostramos el total actualizado en la pantalla
+            mostrarEstadisticas.innerText = "Total de vocales encontradas: " + estadisticasVocales.total;
+            // Limpiamos el input para escribir la siguiente palabra cómodamente
+            inputUsuario.value = "";
+
+            // Ponemos el foco de nuevo en el input
+            inputUsuario.focus();
+
+        } else {
+            alert("¡ Por favor escribe algo antes de agregar!");
+        }
+
+    }
+
+    function contarLasVocales(palabra) {
+        // Definimos cuáles son las vocales
+        const vocales = "aeiouáéíóú";
+
+        // Usamos un bucle "for...of" que recorre la palabra letra por letra
+        for (let letra of palabra) {
+
+            // Convertimos la letra a minúscula para comparar
+            if (vocales.includes(letra.toLowerCase())) {
+                // Si es vocal, sumamos 1 al total de nuestro objeto
+                estadisticasVocales.total = estadisticasVocales.total + 1;
+            }
+        }
+    }
+    // Escuchamos el evento 'click' del botón
+    boton.addEventListener("click", agregarPalabra);
+
+</script>
+
+</html>
