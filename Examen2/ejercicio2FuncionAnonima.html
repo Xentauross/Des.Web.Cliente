@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/JavaScript" src="/T1/Ejercicios/JavaScript/jsflecha2.js"></script>
+    <title>Potencia</title>
+</head>
+
+<body>
+    <h3>Potencia</h3>
+    <input type="number" id="n1" placeholder="Introduce un número">
+    <input type="number" id="n2" placeholder="Introduce un número">
+    <button id="btnsumar" onclick="potencia()">**</button>
+    <p id="resultado"></p>
+
+</body>
+<script>
+
+
+    /**
+     * Función que pontencia los valores de los campos de texto.
+     */
+    function potencia(n1, n2) {
+        // Conversión de string a número decimal.
+        n1 = parseFloat(document.getElementById("n1").value);
+        n2 = parseFloat(document.getElementById("n2").value);
+
+        if (n1 > 0 && n2 >= 0) {
+            const resultado = document.getElementById("resultado");
+            // Mostramos la potencia.
+            resultado.textContent = "Resultado: " + (n1 ** n2);
+
+        } else {
+            alert("Tienes que introducir un número positivo")
+        }
+    }
+
+
+</script>
+
+</html>

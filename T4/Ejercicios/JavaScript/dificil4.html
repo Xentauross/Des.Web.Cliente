@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 4: Gestor de Tareas Asíncrono</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            background: #2d2d2d;
+            color: #eee;
+        }
+
+        .container {
+            background: #3c3c3c;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 8px;
+            background: #555;
+            border: none;
+            color: white;
+        }
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-add {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-run {
+            background: #28a745;
+            color: white;
+        }
+
+        #taskList {
+            list-style: none;
+            padding: 0;
+        }
+
+        .task-item {
+            background: #444;
+            margin: 5px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #666;
+        }
+
+        .status-pending {
+            border-left-color: #ffc107;
+        }
+
+        .status-running {
+            border-left-color: #17a2b8;
+            background: #3a4b4e;
+        }
+
+        .status-success {
+            border-left-color: #28a745;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .status-error {
+            border-left-color: #dc3545;
+            color: #ffadad;
+        }
+
+        #finalLog {
+            margin-top: 20px;
+            border-top: 1px dashed #777;
+            padding-top: 10px;
+            color: #bbb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Ejercicio 4: Asincronía y Promesas (Simulación)</h2>
+        <p>Añade tareas. Al ejecutar, cada una tardará un tiempo aleatorio. Algunas podrían fallar aleatoriamente.</p>
+
+        <div class="controls">
+            <input type="text" id="taskName" placeholder="Nombre Tarea (ej: API Call)">
+            <button class="btn-add" onclick="agregarTarea()">+ Añadir</button>
+            <button class="btn-run" onclick="ejecutarTodas()">▶ Ejecutar Todo</button>
+        </div>
+
+        <ul id="taskList"></ul>
+        <div id="finalLog"></div>
+    </div>
+
+    <script>
+        let colaDeTareas = [];
+
+        function agregarTarea() {
+            const nameInput = document.getElementById('taskName');
+            const nombre = nameInput.value || `Tarea ${colaDeTareas.length + 1}`;
+            // Duración aleatoria entre 1s y 3s
+            const duracion = Math.floor(Math.random() * 2000) + 1000;
+
+            const tarea = {
+                id: Date.now(),
+                nombre: nombre,
+                duracion: duracion,
+                elementoDOM: null
+            };
+
+            colaDeTareas.push(tarea);
+            renderizarTarea(tarea);
+            nameInput.value = '';
+            nameInput.focus();
+        }
+
+        function renderizarTarea(tarea) {
+            const li = document.createElement('li');
+            li.className = 'task-item status-pending';
+            li.id = `task-${tarea.id}`;
+            li.innerHTML = `
+                <span>${tarea.nombre} (${tarea.duracion}ms)</span>
+                <span class="state">Pendiente</span>
+            `;
+            document.getElementById('taskList').appendChild(li);
+            tarea.elementoDOM = li;
+        }
+
+        // Función que envuelve setTimeout en una Promesa
+        function procesarTareaAsync(tarea) {
+            return new Promise((resolve, reject) => {
+                // Actualizar UI a "Corriendo"
+                const estadoSpan = tarea.elementoDOM.querySelector('.state');
+                tarea.elementoDOM.className = 'task-item status-running';
+                estadoSpan.innerText = 'Procesando...';
+
+                setTimeout(() => {
+                    // Simular fallo aleatorio (20% probabilidad)
+                    const exito = Math.random() > 0.2;
+
+                    if (exito) {
+                        tarea.elementoDOM.className = 'task-item status-success';
+                        estadoSpan.innerText = 'Completada';
+                        resolve(tarea.nombre);
+                    } else {
+                        tarea.elementoDOM.className = 'task-item status-error';
+                        estadoSpan.innerText = 'Error (Timeout simulado)';
+                        reject(tarea.nombre);
+                    }
+                }, tarea.duracion);
+            });
+        }
+
+        async function ejecutarTodas() {
+            const logDiv = document.getElementById('finalLog');
+            logDiv.innerHTML = "Iniciando ejecución paralela...<br>";
+
+            // Mapeamos el array de objetos a un array de Promesas
+            const promesas = colaDeTareas.map(t => procesarTareaAsync(t));
+
+            // Promise.allSettled espera a TODAS, fallen o no
+            const resultados = await Promise.allSettled(promesas);
+
+            // Procesar resultados finales
+            const completadas = resultados.filter(r => r.status === 'fulfilled').map(r => r.value);
+            const fallidas = resultados.filter(r => r.status === 'rejected').map(r => r.reason);
+
+            logDiv.innerHTML += `<br><strong>Resumen Final:</strong><br>`;
+            logDiv.innerHTML += `✅ Éxitos (${completadas.length}): ${completadas.join(', ')}<br>`;
+            logDiv.innerHTML += `❌ Fallos (${fallidas.length}): ${fallidas.join(', ')}<br>`;
+
+            // Limpiar cola para la próxima
+            colaDeTareas = [];
+        }
+    </script>
+</body>
+
+</html>

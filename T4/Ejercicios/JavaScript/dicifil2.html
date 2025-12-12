@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 2: Recursividad Profunda</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #eef2f3;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: auto;
+            border-left: 5px solid #28a745;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        #resultado {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Ejercicio 2: Suma Recursiva "Deep"</h2>
+        <p>Introduce un array que puede contener números u OTROS arrays anidados. La recursión debe encontrar todos los
+            números.</p>
+        <p><em>Formato JSON válido requerido.</em></p>
+
+        <input type="text" id="inputArray" placeholder='Ej: [1, 5, [10, [20, 30]], 4]'>
+        <button onclick="ejecutarRecursion()">Calcular Suma Profunda</button>
+
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        // Función Recursiva Pura
+        function sumarProfundo(elemento) {
+            // Caso recursivo: Si es un array, recorrerlo
+            if (Array.isArray(elemento)) {
+                let sumaParcial = 0;
+                for (let item of elemento) {
+                    sumaParcial += sumarProfundo(item); // Llamada recursiva
+                }
+                return sumaParcial;
+            }
+            // Caso base: Si es un número
+            else if (typeof elemento === 'number') {
+                return elemento;
+            }
+            // Caso borde: Ignorar strings o nulos
+            else {
+                return 0;
+            }
+        }
+
+        function ejecutarRecursion() {
+            const inputStr = document.getElementById('inputArray').value;
+            const outputDiv = document.getElementById('resultado');
+
+            try {
+                // Convertir string del usuario a objeto JS real
+                const datos = JSON.parse(inputStr);
+
+                if (!Array.isArray(datos)) {
+                    throw new Error("El input debe ser un Array [...]");
+                }
+
+                const total = sumarProfundo(datos);
+                outputDiv.innerHTML = `Suma Total: <span style="color:blue">${total}</span>`;
+                outputDiv.classList.remove('error');
+
+            } catch (e) {
+                outputDiv.innerText = "Error: " + e.message + " (Asegúrate de usar formato JSON correcto, ej: [1, [2]])";
+                outputDiv.classList.add('error');
+            }
+        }
+    </script>
+</body>
+
+</html>

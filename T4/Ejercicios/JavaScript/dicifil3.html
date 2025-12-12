@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 3: Pipeline Funcional</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+            background: #fff8e1;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #ddd;
+        }
+
+        .options {
+            margin: 15px 0;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 8px;
+            margin-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        button {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #e68900;
+        }
+
+        .log {
+            margin-top: 20px;
+            padding: 10px;
+            border-left: 4px solid #ff9800;
+            background: #fff3e0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Ejercicio 3: Pipeline con Arrow Functions</h2>
+        <p>1. Introduce números separados por comas.</p>
+        <input type="text" id="numerosInput" value="1, 2, 3, 4, 5, 6, 7, 8, 9, 10">
+
+        <p>2. Configura el Pipeline (Orden de ejecución):</p>
+        <div class="options">
+            <strong>Filtro Inicial (Obligatorio):</strong>
+            <select id="filtroSelect">
+                <option value="pares">Solo Pares (n % 2 === 0)</option>
+                <option value="impares">Solo Impares (n % 2 !== 0)</option>
+                <option value="mayores5">Mayores de 5 (n > 5)</option>
+            </select>
+        </div>
+
+        <div class="options">
+            <strong>Transformaciones (Se aplicarán en orden):</strong>
+            <label><input type="checkbox" value="cuadrado"> Elevar al Cuadrado (n * n)</label>
+            <label><input type="checkbox" value="mitad"> Dividir a la mitad (n / 2)</label>
+            <label><input type="checkbox" value="negativo"> Convertir a Negativo (-n)</label>
+            <label><input type="checkbox" value="incrementar"> Sumar 1 (n + 1)</label>
+        </div>
+
+        <button onclick="ejecutarPipeline()">Ejecutar Pipeline</button>
+
+        <div id="salida" class="log" style="display:none;"></div>
+    </div>
+
+    <script>
+        // Diccionario de funciones anónimas (Arrow Functions)
+        const transformacionesDB = {
+            'cuadrado': n => n * n,
+            'mitad': n => n / 2,
+            'negativo': n => -n,
+            'incrementar': n => n + 1
+        };
+
+        const filtrosDB = {
+            'pares': n => n % 2 === 0,
+            'impares': n => n % 2 !== 0,
+            'mayores5': n => n > 5
+        };
+
+        function ejecutarPipeline() {
+            // 1. Obtener datos
+            const rawStr = document.getElementById('numerosInput').value;
+            const numeros = rawStr.split(',').map(n => parseFloat(n)).filter(n => !isNaN(n));
+
+            // 2. Obtener filtro seleccionado
+            const filtroKey = document.getElementById('filtroSelect').value;
+            const funcionFiltro = filtrosDB[filtroKey];
+
+            // 3. Obtener transformaciones seleccionadas (en orden de HTML)
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const funcionesTransformacion = Array.from(checkboxes).map(cb => transformacionesDB[cb.value]);
+
+            // --- LÓGICA PRINCIPAL (Programación Funcional) ---
+
+            // Paso A: Filtrar
+            const filtrados = numeros.filter(funcionFiltro);
+
+            // Paso B: Transformar en cadena (Pipeline)
+            // Usamos reduce para pasar el valor por cada función seleccionada
+            const resultados = filtrados.map(num => {
+                return funcionesTransformacion.reduce((valorActual, fn) => fn(valorActual), num);
+            });
+
+            // Mostrar resultados
+            const div = document.getElementById('salida');
+            div.style.display = 'block';
+            div.innerHTML = `
+                <strong>Original:</strong> [${numeros.join(', ')}]<br>
+                <strong>Filtrados (${filtroKey}):</strong> [${filtrados.join(', ')}]<br>
+                <strong>Transformados:</strong> [${resultados.join(', ')}]
+            `;
+        }
+    </script>
+</body>
+
+</html>

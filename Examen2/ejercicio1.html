@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahorcado</title>
+</head>
+
+<body>
+    <h1>Ejercicios</h1>
+    <label for="arrayPalabras">Introduce las palabras en el array</label>
+    <input type="text" id="arrayPalabras">
+    <button id="agregar">Guardar en el array</button>
+    <h3>Array guardado:</h3>
+    <p id="mostrarArray"></p>
+
+</body>
+<script>
+
+
+    let listaPalabras = [];
+
+    let contador = 8;
+
+
+    const inputUsuario = document.getElementById("arrayPalabras");
+    const boton = document.getElementById("agregar");
+    const mostrarResultado = document.getElementById("mostrarArray");
+
+
+    function agregarPalabra() {
+
+        //Se toma el valor introducido por el usuario
+        let palabraNueva = inputUsuario.value;
+
+        // Verificamos que no esté vacío para no guardar espacios en blanco
+        if (palabraNueva !== "" && palabraNueva.length >= 6) {
+
+            // Tomamos la 1ª letra y la hacemos Mayúscula
+            let palabraMayuscula = palabraNueva.toUpperCase();
+
+
+            // Llamamos a una función auxiliar que creamos abajo para contar
+            contarLasVocales(palabraMayuscula);
+
+            // --- Guardar y Mostrar ---
+            listaPalabras.push(palabraMayuscula);
+            mostrarResultado.innerText = listaPalabras.join(", ");
+
+
+            // Limpiamos el input para escribir la siguiente palabra cómodamente
+            inputUsuario.value = "";
+
+            // Ponemos el foco de nuevo en el input
+            inputUsuario.focus();
+
+
+        } else {
+            alert("¡ Por favor escribe algo antes de agregar o la longitud debe de ser de 6!");
+        }
+    }
+
+
+    // Escuchamos el evento 'click' del botón
+    boton.addEventListener("click", agregarPalabra);
+
+</script>
+
+</html>

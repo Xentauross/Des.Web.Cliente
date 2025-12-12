@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Examen DAW 2: File System Search</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #222;
+            color: #0f0;
+        }
+
+        .container {
+            border: 1px solid #444;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        input,
+        button {
+            padding: 10px;
+            border: none;
+        }
+
+        input {
+            width: 60%;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 5px;
+            border-bottom: 1px dashed #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>root@server:~$ find / -name "..."</h3>
+        <p>Sistema de archivos cargado en memoria.</p>
+        <input type="text" id="query" placeholder="Ej: config, .js, secret">
+        <button onclick="iniciarBusqueda()">Buscar</button>
+        <ul id="resultados"></ul>
+    </div>
+
+    <script>
+        // Estructura compleja simulando directorios
+        const fileSystem = {
+            name: "root",
+            type: "folder",
+            children: [
+                {
+                    name: "etc",
+                    type: "folder",
+                    children: [
+                        { name: "nginx", type: "folder", children: [{ name: "nginx.conf", type: "file" }] },
+                        { name: "hosts", type: "file" }
+                    ]
+                },
+                {
+                    name: "home",
+                    type: "folder",
+                    children: [
+                        {
+                            name: "user",
+                            type: "folder",
+                            children: [
+                                { name: "documents", type: "folder", children: [{ name: "thesis.pdf", type: "file" }] },
+                                {
+                                    name: "projects", type: "folder", children: [
+                                        { name: "app.js", type: "file" },
+                                        { name: "style.css", type: "file" },
+                                        { name: "config.json", type: "file" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Función Recursiva que arrastra el "path" acumulado
+        function buscarArchivos(nodo, termino, rutaActual = "") {
+            let encontrados = [];
+
+            // Construir ruta actual
+            const nuevaRuta = rutaActual === "" ? nodo.name : `${rutaActual}/${nodo.name}`;
+
+            // Caso Base: Es un archivo y coincide
+            if (nodo.type === 'file') {
+                if (nodo.name.toLowerCase().includes(termino.toLowerCase())) {
+                    encontrados.push(nuevaRuta);
+                }
+                return encontrados;
+            }
+
+            // Caso Recursivo: Es carpeta y tiene hijos
+            if (nodo.type === 'folder' && nodo.children) {
+                for (let hijo of nodo.children) {
+                    // Spread operator para combinar resultados de los hijos
+                    encontrados = [...encontrados, ...buscarArchivos(hijo, termino, nuevaRuta)];
+                }
+            }
+
+            return encontrados;
+        }
+
+        function iniciarBusqueda() {
+            const query = document.getElementById('query').value;
+            if (!query) return;
+
+            const resultados = buscarArchivos(fileSystem, query);
+            const lista = document.getElementById('resultados');
+
+            if (resultados.length === 0) {
+                lista.innerHTML = "<li>No se encontraron coincidencias.</li>";
+            } else {
+                lista.innerHTML = resultados.map(r => `<li>${r}</li>`).join('');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Examen DAW 4: Robust Fetch</title>
+    <style>
+        body {
+            font-family: 'Consolas', sans-serif;
+            background: #1a1a1a;
+            color: #ddd;
+            padding: 20px;
+        }
+
+        button {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            background: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #logs {
+            margin-top: 20px;
+            border: 1px solid #444;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            background: black;
+        }
+
+        .info {
+            color: #29b6f6;
+        }
+
+        .warn {
+            color: #ffca28;
+        }
+
+        .error {
+            color: #f44336;
+        }
+
+        .success {
+            color: #66bb6a;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Async Pattern: Retry with Exponential Backoff</h2>
+    <p>Simula una conexión inestable. El sistema reintentará automáticamente.</p>
+    <button onclick="iniciarDescarga()">Iniciar Descarga Robusta</button>
+    <div id="logs"></div>
+
+    <script>
+        const logger = (msg, type = 'info') => {
+            const div = document.getElementById('logs');
+            div.innerHTML += `<div class="${type}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+            div.scrollTop = div.scrollHeight;
+        };
+
+        // Simula una API que falla el 70% de las veces
+        const apiInestable = (intento) => new Promise((resolve, reject) => {
+            const tiempo = Math.floor(Math.random() * 1000) + 500;
+            setTimeout(() => {
+                // Probabilidad de fallo alta
+                if (Math.random() > 0.3) {
+                    reject(new Error(`Error de red en intento ${intento}`));
+                } else {
+                    resolve("DATOS_CONFIDENCIALES_OBTENIDOS_OK");
+                }
+            }, tiempo);
+        });
+
+        // Utilidad: Esperar X ms
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // LÓGICA PRINCIPAL: Fetch con Reintentos
+        async function fetchConRetry(maxRetries) {
+            for (let i = 1; i <= maxRetries; i++) {
+                try {
+                    logger(`Intento ${i} de ${maxRetries}...`, 'info');
+
+                    // Carrera: La API vs un Timeout estricto de 2s
+                    const resultado = await Promise.race([
+                        apiInestable(i),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout límite excedido")), 2000))
+                    ]);
+
+                    return resultado; // Si tiene éxito, salimos de la función
+
+                } catch (error) {
+                    logger(`Fallo en intento ${i}: ${error.message}`, 'warn');
+
+                    if (i === maxRetries) throw new Error("Se acabaron los reintentos. Operación fallida.");
+
+                    // Backoff Exponencial: esperar 1s, luego 2s, luego 4s...
+                    const espera = Math.pow(2, i - 1) * 1000;
+                    logger(`Esperando ${espera}ms antes de reintentar...`, 'info');
+                    await wait(espera);
+                }
+            }
+        }
+
+        async function iniciarDescarga() {
+            document.getElementById('logs').innerHTML = '';
+            try {
+                const datos = await fetchConRetry(4); // 4 intentos máx
+                logger(`ÉXITO FINAL: ${datos}`, 'success');
+            } catch (e) {
+                logger(`FATAL: ${e.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Examen DAW 3: Memoization & Cache</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        .log {
+            background: #f4f4f4;
+            border-left: 5px solid #333;
+            padding: 10px;
+            font-family: monospace;
+            margin-top: 5px;
+        }
+
+        .fast {
+            border-left-color: green;
+        }
+
+        .slow {
+            border-left-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Patrón Memoization con TTL (Caché con expiración)</h2>
+    <p>Calcula el factorial de un número. La primera vez será lento (simulado). La segunda, instantáneo. Después de 5s,
+        la caché expira y vuelve a ser lento.</p>
+
+    <input type="number" id="numInput" value="10">
+    <button onclick="calcular()">Ejecutar</button>
+    <div id="console"></div>
+
+    <script>
+        // --- LÓGICA DEL PROFESOR (Patrón Proxy/Decorator) ---
+
+        // Función Factorial Lenta (Simulamos lentitud)
+        const factorialLento = (n) => {
+            const start = Date.now();
+            while (Date.now() - start < 1000) { } // Bloquea CPU 1 segundo intencionalmente
+            if (n === 0 || n === 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) result *= i;
+            return result;
+        };
+
+        // HOF: Función que crea la caché
+        const memoizeConTTL = (fn, ttlMs) => {
+            const cache = {}; // El Closure mantiene vivo este objeto
+
+            return (arg) => {
+                const now = Date.now();
+
+                // ¿Existe en caché y NO ha expirado?
+                if (cache[arg] && (now - cache[arg].timestamp < ttlMs)) {
+                    return { value: cache[arg].value, source: 'CACHE (Rápido)' };
+                }
+
+                // Si no, calculamos
+                const result = fn(arg);
+
+                // Guardamos en caché con marca de tiempo
+                cache[arg] = {
+                    value: result,
+                    timestamp: now
+                };
+
+                return { value: result, source: 'CALCULADO (Lento)' };
+            };
+        };
+
+        // Creamos la versión optimizada de la función (TTL 5000ms)
+        const factorialMemo = memoizeConTTL(factorialLento, 5000);
+
+        // --- INTERFAZ ---
+        function calcular() {
+            const n = parseInt(document.getElementById('numInput').value);
+            const log = document.getElementById('console');
+
+            log.innerHTML += `<div class="log">Solicitando factorial de ${n}...</div>`;
+
+            // Usamos setTimeout para que el navegador pueda pintar el mensaje anterior antes de bloquearse
+            setTimeout(() => {
+                const t0 = performance.now();
+                const resultado = factorialMemo(n);
+                const t1 = performance.now();
+
+                const clase = resultado.source.includes('CACHE') ? 'fast' : 'slow';
+
+                log.innerHTML += `
+                    <div class="log ${clase}">
+                        Resultado: ${resultado.value} <br>
+                        Origen: <strong>${resultado.source}</strong> <br>
+                        Tiempo Ejecución: ${(t1 - t0).toFixed(2)} ms
+                    </div>`;
+            }, 50);
+        }
+    </script>
+</body>
+
+</html>

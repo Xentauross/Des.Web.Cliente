@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 1: Analizador de Texto Avanzado</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background: #222;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Ejercicio 1: Arrays y Strings (Modo Experto)</h2>
+        <p>Introduce palabras (acepta tildes y mayúsculas). El sistema las capitalizará, las ordenará por longitud y
+            desglosará las vocales.</p>
+
+        <textarea id="inputText" placeholder="Ej: Hola, Árbol, MURCIÉLAGO, pingüino..."></textarea>
+        <button onclick="procesarTexto()">Analizar Texto</button>
+
+        <div id="resultado">Esperando entrada...</div>
+    </div>
+
+    <script>
+        // Función principal
+        function procesarTexto() {
+            const rawInput = document.getElementById('inputText').value;
+            // Separar por comas, espacios o saltos de línea
+            const words = rawInput.split(/[\s,]+/).filter(w => w.length > 0);
+
+            if (words.length === 0) {
+                document.getElementById('resultado').innerText = "Por favor, introduce al menos una palabra.";
+                return;
+            }
+
+            const desgloseVocales = { a: 0, e: 0, i: 0, o: 0, u: 0 };
+            let totalVocales = 0;
+
+            const palabrasProcesadas = words.map(word => {
+                // 1. Capitalizar (primera mayúscula, resto minúscula)
+                const lower = word.toLowerCase();
+                const capitalized = lower.charAt(0).toUpperCase() + lower.slice(1);
+
+                // 2. Contar vocales (Normalizando tildes: Á -> a)
+                // Usamos normalize('NFD') para separar la letra del acento
+                const normalizada = lower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                for (let char of normalizada) {
+                    if (desgloseVocales.hasOwnProperty(char)) {
+                        desgloseVocales[char]++;
+                        totalVocales++;
+                    }
+                }
+                return capitalized;
+            });
+
+            // 3. Ordenar por longitud descendente (Complejidad extra)
+            palabrasProcesadas.sort((a, b) => b.length - a.length);
+
+            // Construir objeto de salida
+            const output = {
+                palabrasProcesadas: palabrasProcesadas,
+                estadisticas: {
+                    totalVocales: totalVocales,
+                    detalle: desgloseVocales
+                },
+                cantidadPalabras: words.length
+            };
+
+            // Mostrar en el DOM
+            document.getElementById('resultado').innerText = JSON.stringify(output, null, 2);
+        }
+    </script>
+</body>
+
+</html>
