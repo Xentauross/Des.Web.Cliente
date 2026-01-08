@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindromo</title>
+</head>
+
+<body>
+    <h1>Verificador de Palíndromos</h1>
+    <form id="formulario">
+        <label for="texto">Ingrese un texto:</label><br>
+        <input type="text" id="texto" name="texto" required><br><br>
+        <input type="submit" value="Verificar">
+    </form>
+
+    <h2>Resultado:</h2>
+    <p id="resultado"></p>
+
+    <script>
+        // 1. Referencias a los elementos del DOM
+        const formulario = document.getElementById('formulario');
+        const inputTexto = document.getElementById('texto');
+        const contenedorResultado = document.getElementById('resultado');
+
+        // Función recursiva
+        function esPalindromo(texto) {
+            // Limpieza: quitar espacios, acentos y pasar a minúsculas
+            texto = texto.toLowerCase().replace(/[\s\W_]/g, '');
+
+            function verificar(inicio, fin) {
+                if (inicio >= fin) return true;
+                if (texto[inicio] !== texto[fin]) return false;
+                return verificar(inicio + 1, fin - 1);
+            }
+
+            return verificar(0, texto.length - 1);
+        }
+
+        // 2. Escuchar el evento 'submit' del formulario
+        formulario.addEventListener('submit', function (event) {
+            // Evitar que la página se recargue
+            event.preventDefault();
+
+            // Obtener el valor del input
+            const valor = inputTexto.value;
+
+            // Ejecutar la lógica
+            if (esPalindromo(valor)) {
+                contenedorResultado.textContent = `✅ "${valor}" es un palíndromo.`;
+                contenedorResultado.style.color = "green";
+            } else {
+                contenedorResultado.textContent = `❌ "${valor}" no es un palíndromo.`;
+                contenedorResultado.style.color = "red";
+            }
+        });
+    </script>
+</body>
+
+</html>
