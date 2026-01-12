@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+
+    //Entrada de datos guardado en un array
+
+    let capitales = [];
+
+    for (let i = 0; i < 6; i++) {
+        //Declaración variable ciudad para ir guardando las capitales
+        let ciudad;
+
+        // Bucle do-while para asegurar que la capital tiene al menos 5 letras
+        do {
+            //Solicitud de entrada de datos en la variable ciudad
+            ciudad = prompt("Introduce el nombre de una capital (mínimo 5 letras):");
+            //Condición del bucle que se repite mientras la longitud de la ciudad sea menor a 5
+        } while (ciudad.length < 5);
+
+        //Convertimos la ciudad a minúsculas
+        //Guaramos la ciudad en el array capitales
+        capitales.push(ciudad.toLowerCase());
+
+    }
+
+    //Mostrar las capitales introducidascadiz
+    alert("Las capitales introducidas son: " + capitales.join(", "));
+
+
+
+</script>
+
+</html>
