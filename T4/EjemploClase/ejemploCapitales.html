@@ -33,10 +33,44 @@
 
     }
 
-    //Mostrar las capitales introducidascadiz
-    alert("Las capitales introducidas son: " + capitales.join(", "));
+    //Mostrar las capitales introducidas
+    console.log("Las capitales introducidas son: " + capitales.join(", "));
 
+    //Elegir una capital al azar
+    let posicionElegida = Math.floor(Math.random() * capitales.length);
 
+    //Guardamos la capital elegida en una variable
+    let capitalElegida = capitales[posicionElegida];
+
+    //Mostrar la capital elegida
+    console.log(capitalElegida);
+
+    //Hay que crear 2 variables para el control del juego una para el contador y otra para el control de acierto
+    let intentos = 1;
+    let acertado = false;
+
+    //Necesitamos hacer un bucle para ir mostrando letras
+    while (!acertado && intentos <= capitalElegida.length) {
+
+        // Aqui usamos el substring para ir mostrando la capital elegida
+        let pista = capitalElegida.substring(0, intentos);
+
+        //Para que el usuario pueda insertar las letras creamos una variable
+        //con un prompt
+        let intentoUsuario = prompt("Pista: " + pista + "\nIntoduce la capital completa: ").toLowerCase();
+
+        if (intentoUsuario === capitalElegida) {
+            acertado = true;
+        } else {
+            intentos++;
+        }
+    }
+
+    if (acertado) {
+        alert("!Has ganado! La capital era: " + capitalElegida);
+    } else {
+        alert("!Has perdido! La capital era: " + capitalElegida);
+    }
 
 </script>
 
