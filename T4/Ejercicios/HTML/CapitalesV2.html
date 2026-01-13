@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Capitales</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        #consola-visual {
+            background: #f0f0f0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Juego de las Capitales</h1>
+    <p>Pulsa el botón para ejecutar tu código.</p>
+
+    <button onclick="iniciarJuego()">Empezar Juego</button>
+
+    <div id="consola-visual">Esperando...</div>
+
+    <script>
+
+        // Función auxiliar para imprimir en el HTML
+        function escribir(texto) {
+
+            // Añadimos el texto al div
+            document.getElementById("consola-visual").innerHTML += texto + "<br>";
+        }
+
+        function iniciarJuego() {
+
+            // Limpiamos la pantalla al empezar
+            document.getElementById("consola-visual").innerHTML = "";
+
+
+            let capitales = [];
+
+            for (let i = 0; i < 6; i++) {
+                let ciudad;
+
+                do {
+                    ciudad = prompt("Introduce la capital nº " + (i + 1) + " (mínimo 5 letras):");
+
+                    // Protección por si el usuario da a Cancelar
+                    if (ciudad === null) return;
+                } while (ciudad.length < 5);
+
+                capitales.push(ciudad.toLowerCase());
+            }
+
+
+            escribir("<b>Las capitales introducidas son:</b> " + capitales.join(", "));
+
+            let posicionElegida = Math.floor(Math.random() * capitales.length);
+            let capitalElegida = capitales[posicionElegida];
+
+
+            let intentos = 1;
+            let acertado = false;
+
+            while (!acertado && intentos <= capitalElegida.length) {
+
+                let parteVisible = capitalElegida.substring(0, intentos);
+
+                // Calculamos cuántas letras quedan por salir
+                let letrasFaltantes = capitalElegida.length - intentos;
+
+
+                // Esto repite el guion tantas veces como letras falten
+                let guiones = " _ ".repeat(letrasFaltantes);
+
+                // Juntamos todo en la pista final
+                let pista = parteVisible + guiones;
+
+                // El prompt sigue siendo necesario para pausar el bucle while
+                let intentoUsuario = prompt("Pista: " + pista.toUpperCase() + "\nIntroduce la capital completa: ");
+
+                // Protección por si cancelan
+                if (intentoUsuario === null) break;
+
+                intentoUsuario = intentoUsuario.toLowerCase();
+
+                if (intentoUsuario === capitalElegida) {
+                    acertado = true;
+                } else {
+                    intentos++;
+                    escribir("Fallo. Intento " + (intentos - 1) + " gastado. ");
+                }
+            }
+
+            //Premios según los intentos
+            if (acertado) {
+                let premio = 0;
+                if (intentos === 1) {
+                    premio = 500;
+                } else if (intentos === 2) {
+                    premio = 300;
+                } else if (intentos === 3) {
+                    premio = 100;
+                }
+            }
+            if (acertado) {
+                escribir("<h3 style='color:green'>¡Has ganado! La capital era: " + capitalElegida + ".Premio: " + premio + "€" + "</h3>");
+                alert("¡Has ganado!");
+            } else {
+                escribir("<h3 style='color:red'>¡Has perdido! La capital era: " + capitalElegida + "</h3>");
+                alert("¡Has perdido!");
+            }
+        }
+    </script>
+</body>
+
+
+
+</html>
