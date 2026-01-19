@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resto Anónima</title>
+</head>
+
+<body>
+    <h3>Resto/Módulo (Función Anónima)</h3>
+    <input type="number" id="n1" placeholder="Dividendo">
+    <input type="number" id="n2" placeholder="Divisor">
+    <button onclick="resto()">Calcular</button>
+    <p id="resultado"></p>
+
+    <script>
+        function resto() {
+            let num1 = parseFloat(document.getElementById("n1").value);
+            let num2 = parseFloat(document.getElementById("n2").value);
+
+            // --- FUNCIÓN ANÓNIMA ---
+
+            // La guardamos en la constante 'calcularResto'
+            const calcularResto = function (a, b) {
+                // Caso Base
+                if (a < b) {
+                    return a;
+                }
+                // Paso Recursivo
+                else {
+                    return calcularResto(a - b, b);
+                }
+            };
+            // -----------------------
+
+            if (!isNaN(num1) && num1 >= 0 && !isNaN(num2) && num2 > 0) {
+                // La llamamos usando el nombre de la variable
+                const res = calcularResto(num1, num2);
+                document.getElementById("resultado").textContent = "Resultado: " + res;
+            } else {
+                alert("Introduce números positivos (divisor > 0)");
+            }
+        }
+    </script>
+</body>
+
+</html>

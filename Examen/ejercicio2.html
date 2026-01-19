@@ -121,8 +121,8 @@
             if (dawMap.has(abreviado)) { // Comprobamos si existe
                 alert(`Existe.`)
                 const nuevo = prompt("Introduce el nombre abreviado del modulo:")
-                dawMap.replace(abreviado, nuevo); // La borramos
-                alert(`Se modifico ${nuevo}.`); // Mensaje de confirmación
+                dawMap.set(abreviado, nuevo);
+                alert(`Se modifico ${nuevo}.`);
                 mostrarModulos(); // Actualizamos la lista
             } else {
                 alert("Ese modulo no existe."); // Mensaje si no la encuentra

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Multiplicación Flecha</title>
+</head>
+
+<body>
+    <h3>Multiplicación (Función Flecha)</h3>
+    <input type="number" id="n1" placeholder="Número 1">
+    <input type="number" id="n2" placeholder="Número 2">
+    <button onclick="multiplicacion()">Calcular</button>
+    <p id="resultado"></p>
+
+    <script>
+        function multiplicacion() {
+            let num1 = parseFloat(document.getElementById("n1").value);
+            let num2 = parseFloat(document.getElementById("n2").value);
+
+            // --- FUNCIÓN FLECHA ---
+            // Quitamos 'function' y ponemos '=>'
+            const calcularMultiplicacion = (a, b) => {
+                // Caso Base
+                if (b === 0) {
+                    return 0;
+                }
+                // Paso Recursivo
+                else {
+                    return a + calcularMultiplicacion(a, b - 1);
+                }
+            };
+            // ----------------------
+
+            if (!isNaN(num1) && num1 >= 0 && !isNaN(num2) && num2 >= 0) {
+                const res = calcularMultiplicacion(num1, num2);
+                document.getElementById("resultado").textContent = "Resultado: " + res;
+            } else {
+                alert("Introduce números positivos");
+            }
+        }
+    </script>
+</body>
+
+</html>

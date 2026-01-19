@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>División Flecha</title>
+</head>
+
+<body>
+    <h3>División Entera (Función Flecha)</h3>
+    <input type="number" id="n1" placeholder="Dividendo">
+    <input type="number" id="n2" placeholder="Divisor">
+    <button onclick="division()">Calcular</button>
+    <p id="resultado"></p>
+
+    <script>
+        function division() {
+            let num1 = parseFloat(document.getElementById("n1").value);
+            let num2 = parseFloat(document.getElementById("n2").value);
+
+            // --- FUNCIÓN FLECHA ---
+            // Quitamos 'function' y ponemos '=>'
+            const calcularDivision = (a, b) => {
+                // Caso Base
+                if (a < b) {
+                    return 0;
+                }
+                // Paso Recursivo
+                else {
+                    return 1 + calcularDivision(a - b, b);
+                }
+            };
+            // ----------------------
+
+            if (!isNaN(num1) && num1 >= 0 && !isNaN(num2) && num2 > 0) {
+                const res = calcularDivision(num1, num2);
+                document.getElementById("resultado").textContent = "Resultado: " + res;
+            } else {
+                alert("Introduce números positivos (divisor > 0)");
+            }
+        }
+    </script>
+</body>
+
+</html>

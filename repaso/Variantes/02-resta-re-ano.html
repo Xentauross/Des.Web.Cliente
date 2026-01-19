@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resta Anónima</title>
+</head>
+
+<body>
+    <h3>Resta (Función Anónima)</h3>
+    <input type="number" id="n1" placeholder="Número 1">
+    <input type="number" id="n2" placeholder="Número 2">
+    <button onclick="resta()">Calcular</button>
+    <p id="resultado"></p>
+
+    <script>
+        function resta() {
+            let num1 = parseFloat(document.getElementById("n1").value);
+            let num2 = parseFloat(document.getElementById("n2").value);
+
+            // --- FUNCIÓN ANÓNIMA ---
+
+            // La guardamos en la constante 'calcularResta'
+            const calcularResta = function (a, b) {
+                // Caso Base
+                if (b === 0) {
+                    return a;
+                }
+                // Paso Recursivo
+                else {
+                    return calcularResta(a - 1, b - 1);
+                }
+            };
+            // -----------------------
+
+            if (!isNaN(num1) && num1 >= 0 && !isNaN(num2) && num2 >= 0) {
+                // La llamamos usando el nombre de la variable
+                const res = calcularResta(num1, num2);
+                document.getElementById("resultado").textContent = "Resultado: " + res;
+            } else {
+                alert("Introduce números positivos");
+            }
+        }
+    </script>
+</body>
+
+</html>
