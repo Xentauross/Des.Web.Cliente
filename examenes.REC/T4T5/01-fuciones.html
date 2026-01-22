@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        /**
+ * Función que multiplica
+ */
+
+        let n1 = prompt("Introduce un numero")
+        let n2 = prompt("Introduce otro numero")
+
+        const multiplicar = (n1, n2) => {
+            const resultado = n1 * n2
+            return resultado
+        }
+
+        alert(multiplicar(n1, n2))
+
+
+
+        let m1 = prompt("Introduce un numero")
+        let m2 = prompt("Introduce otro numero")
+        /**
+ * Función que divide
+ */
+        const dividir = function (m1, m2) {
+
+            const resultado = 0
+            // Controlamos el caso especial: No se puede dividir por cero.
+            if (m2 === 0) {
+                alert("Error: División por cero");
+            } else {
+                // Mostramos la división.
+                return resultado = m1 / m2
+            }
+        }
+
+        console.log(dividir(m1, m2))
+
+        alert(dividir(m1, m2))
+    </script>
+</body>
+
+</html>

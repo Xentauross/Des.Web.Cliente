@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validacion Usuario</title>
+</head>
+
+<body>
+    <p id="mostrar"></p>
+
+    <script>
+        let nombre = prompt("Introduce el nombre: ", "")
+
+        if (nombre == " " && nombre == null)
+            alert("Error no puedes dejar el nombre vacio")
+
+        let edad = prompt("Introduce la edad: ")
+        if (!isNaN(edad) && edad <= 0)
+            alert("Error en la edad")
+
+        let p = document.getElementById("mostrar")
+        p.textContent = nombre + " " + edad
+
+        //control de guardado en variables
+        console.log(nombre, edad)
+
+
+    </script>
+</body>
+
+</html>
