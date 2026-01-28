@@ -10,6 +10,8 @@ $(document).ready(function () {
     let seccion3 = $(".contenido3")
     let seccion4 = $(".contenido4")
     let seccion5 = $(".contenido5")
+    let seccion6 = $(".contenido6")
+    let seccion7 = $(".contenido7")
 
     // Variables de menú
     let menu = $("#menu .menuTema")
@@ -43,6 +45,10 @@ $(document).ready(function () {
             seccion4.fadeIn()
         } else if (this.id === "tema5") {
             seccion5.fadeIn()
+        } else if (this.id === "tema6") {
+            seccion6.fadeIn()
+        } else if (this.id === "tema7") {
+            seccion7.fadeIn()
         }
     })
 })

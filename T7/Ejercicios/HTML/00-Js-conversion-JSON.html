@@ -55,6 +55,14 @@
             background-color: #dc3545;
         }
 
+        .btn-down {
+            background-color: #c9b81f;
+        }
+
+        .btn-up {
+            background-color: #1eb81e;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -85,8 +93,8 @@
             <div class="botones">
                 <button type="submit" class="btn-add">Añadir Alumno</button>
                 <button type="button" id="btnBorrarTodo" class="btn-clear">Borrar Todo</button>
-                <button type="button" id="" class=""></button>
-                <button type="button" id="" class=""></button>
+                <button type="button" id="descargarJSON" class="btn-down">Descargar JSON</button>
+                <button type="button" id="cargarJSON" class="btn-up">Cargar JSON</button>
             </div>
         </form>
 
@@ -166,6 +174,88 @@
             }
         }
 
+        // --- 4. Descargar JSON ---
+
+        const btnDescargar = document.getElementById('descargarJSON');
+
+        btnDescargar.addEventListener('click', () => {
+
+            // 1. Convertir datos a texto: Transformamos el array de objetos a un String JSON legible
+            const datosTexto = JSON.stringify(alumnos, null, 2);
+
+            // 2. Crear archivo en memoria: El Blob actúa como un contenedor de archivo físico
+            const archivoBlob = new Blob([datosTexto], { type: 'application/json' });
+
+            // 3. Generar URL temporal: Creamos una dirección interna que apunta a ese Blob
+            const urlParaDescargar = URL.createObjectURL(archivoBlob);
+
+            // 4. Crear enlace invisible: Necesitamos un elemento <a> para activar la descarga
+            const enlace = document.createElement('a');
+            enlace.href = urlParaDescargar;
+
+            // Nombre del archivo que bajará el usuario
+            enlace.download = 'listado_alumnos.json';
+
+            // 5. Simular el clic: Añadimos el enlace al DOM, hacemos clic y lo borramos
+            document.body.appendChild(enlace);
+            enlace.click();
+
+            // 6. Limpieza: Borramos el enlace y liberamos la memoria del Blob
+            document.body.removeChild(enlace);
+            URL.revokeObjectURL(urlParaDescargar);
+        });
+
+        // --- 5. Cargar un JSON ---
+
+        const btnCargar = document.getElementById('cargarJSON')
+
+        btnCargar.addEventListener('click', () => {
+
+            // 1. Crear input de archivo temporal (invisible)
+
+            const input = document.createElement('input');
+            input.type = 'file';
+            // Solo aceptamos archivos .json
+            input.accept = 'application/json';
+
+            input.onchange = (evento) => {
+
+                // El archivo está dentro de una lista llamada 'files'.
+                // Como solo permitimos uno, cogemos el primero.
+                const archivo = evento.target.files[0]
+
+                //Controlamos con un if que se seleccione el archivo
+                if (!archivo) {
+                    return
+                }
+
+                // Intanciamos el lector esto es un objeto nativo del navegador
+                const lector = new FileReader()
+
+                // Le decimos qué hacer cuando termine de leer
+                lector.onload = (e) => {
+                    // Leemos el contenido del JSON y lo guardamos(nos lo da como texto)
+                    const contenidoTexto = e.target.result
+
+                    try {
+                        // Intentamos convertit el texto a Array
+                        const datosCargados = JSON.parse(contenidoTexto)
+
+                        //Actualizamos la variable con los datos del JSON
+                        alumnos = datosCargados;
+
+                        // Guardamos en LocalStorage y repintamos la tabla
+                        guardarYSincronizar()
+                    } catch (error) {
+                        alert("Error al cargar")
+                    }
+                }
+                // Le ordenamos que leea ahora el archivo una vez comprobado
+                lector.readAsText(archivo);
+            }
+            // Disparar el selector de archivos
+            input.click();
+        })
     </script>
 
 </body>
