@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Productos</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        button {
+            margin-right: 10px;
+            padding: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Catálogo de Productos</h1>
+
+    <button id="btnCargar">Cargar productos</button>
+    <button id="btnFiltrar">Filtrar por stock bajo</button>
+
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Marca</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+
+        let productos = []; // guardamos todos los productos aquí
+
+        const tbody = document.querySelector("#tabla tbody");
+        const btnCargar = document.getElementById("btnCargar");
+        const btnFiltrar = document.getElementById("btnFiltrar");
+
+        btnCargar.addEventListener("click", obtenerProductos);
+        btnFiltrar.addEventListener("click", filtrarStockBajo);
+
+        // 1. Función async que obtiene los productos
+        async function obtenerProductos() {
+
+            const respuesta = await fetch("https://dummyjson.com/products");
+            const datos = await respuesta.json();
+
+            productos = datos.products; // el array viene dentro de "products"
+
+            pintarTabla(productos);
+        }
+
+        // Función para pintar la tabla
+        function pintarTabla(lista) {
+
+            tbody.innerHTML = ""; // limpiar tabla
+
+            for (const p of lista) {
+                const fila = document.createElement("tr");
+
+                fila.innerHTML = `
+                    <td>${p.title}</td>
+                    <td>${p.price} €</td>
+                    <td>${p.stock}</td>
+                    <td>${p.brand}</td>
+                    `;
+
+                tbody.appendChild(fila);
+            }
+        }
+
+        // 3. Filtro por stock bajo
+        function filtrarStockBajo() {
+
+            const filtrados = productos.filter(p => p.stock < 10);
+
+            pintarTabla(filtrados);
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Buscador de Productos</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        img {
+            width: 80px;
+        }
+
+        #mensaje {
+            margin-top: 15px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Buscador de Productos</h1>
+
+    <input type="text" id="busqueda" placeholder="Escribe un producto...">
+    <button id="btnBuscar">Buscar</button>
+
+    <div id="mensaje"></div>
+
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Descuento</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+
+        const input = document.getElementById("busqueda");
+        const boton = document.getElementById("btnBuscar");
+        const tbody = document.querySelector("#tabla tbody");
+        const mensaje = document.getElementById("mensaje");
+
+        boton.addEventListener("click", buscarProductos);
+
+        async function buscarProductos() {
+
+            const texto = input.value.trim();
+            mensaje.textContent = "";
+            tbody.innerHTML = "";
+
+            if (texto === "") {
+                mensaje.textContent = "Introduce un término de búsqueda";
+                return;
+            }
+
+            try {
+
+                const respuesta = await fetch(`https://dummyjson.com/products/search?q=${texto}`);
+                const datos = await respuesta.json();
+
+                const productos = datos.products;
+
+                // No hay resultados
+                if (productos.length === 0) {
+                    mensaje.textContent = "No se encontraron productos que coincidan con tu búsqueda";
+                    return;
+                }
+
+                // Pintar resultados
+                for (const p of productos) {
+
+                    const fila = document.createElement("tr");
+
+                    fila.innerHTML = `<td><img src="${p.thumbnail}"></td>
+                        <td>${p.title}</td>
+                        <td>${p.description.substring(0, 60)}...</td>
+                        <td>${p.discountPercentage}%</td>
+                    `;
+
+                    tbody.appendChild(fila);
+                }
+
+            } catch (error) {
+                mensaje.textContent = "Error al conectar con la API";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
