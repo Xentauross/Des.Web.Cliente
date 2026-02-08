@@ -1,0 +1,168 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+:root {
+    --primary-color: #0d6efd;
+    /* Azul Bootstrap */
+    --primary-hover: #0b5ed7;
+    --danger-color: #dc3545;
+    /* Rojo borrado */
+    --danger-hover: #bb2d3b;
+    --bg-color: #f8f9fa;
+    /* Gris muy claro */
+    --border-color: #dee2e6;
+    --text-color: #212529;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.container {
+    width: 100%;
+    max-width: 900px;
+    /* Ancho máximo para que no se estire demasiado */
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* --- FORMULARIO --- */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que los elementos bajen si no caben */
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Estilo para los Inputs */
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+    flex: 1 1 200px;
+    /* Crecen para ocupar espacio, mínimo 200px */
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* --- BOTONES --- */
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Botón Principal (Registrar) */
+#btnEnviar {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#btnEnviar:hover {
+    background-color: var(--primary-hover);
+}
+
+#btnEnviar:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Botón Secundario (Cargar) */
+#btnCargar {
+    background-color: #6c757d;
+    color: white;
+}
+
+#btnCargar:hover {
+    background-color: #5c636a;
+}
+
+/* Botón Eliminar (Dentro de la tabla) */
+.btn-eliminar {
+    background-color: var(--danger-color);
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.875rem;
+}
+
+.btn-eliminar:hover {
+    background-color: var(--danger-hover);
+}
+
+/* --- MENSAJES DE RESPUESTA --- */
+#mensajeRespuesta {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* --- TABLA --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #212529;
+    /* Cabecera oscura */
+    color: white;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    /* Efecto al pasar el ratón */
+}
+
+/* --- RESPONSIVE (Móviles) --- */
+@media (max-width: 600px) {
+    form {
+        flex-direction: column;
+        /* Inputs uno debajo del otro */
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        /* Scroll lateral si la tabla no cabe */
+        display: block;
+        width: 100%;
+    }
+}

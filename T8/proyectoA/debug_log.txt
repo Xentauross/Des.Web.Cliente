@@ -1,0 +1,108 @@
+Fecha: 2026-02-08 14:05:10
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:05:55
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:01
+Método: DELETE
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:01
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:01
+Método: DELETE
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:01
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:09
+Método: DELETE
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:09
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:11
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:38
+Método: POST
+Datos recibidos: Array
+(
+    [nombre] => Vicente
+    [correo] => vpa@gmail.com
+    [movil] => 722585956
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:38
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:48
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:06:56
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:07:17
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-08 14:07:19
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
