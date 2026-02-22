@@ -105,17 +105,7 @@ button {
     background-color: #5c636a;
 }
 
-/* Botón Eliminar (Dentro de la tabla) */
-.btn-eliminar {
-    background-color: var(--danger-color);
-    color: white;
-    padding: 5px 10px;
-    font-size: 0.875rem;
-}
 
-.btn-eliminar:hover {
-    background-color: var(--danger-hover);
-}
 
 /* --- MENSAJES DE RESPUESTA --- */
 #mensajeRespuesta {

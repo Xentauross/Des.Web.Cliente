@@ -1,86 +1,44 @@
 <?php
-
 /**
- * API RESTful para gestión de productos - Tienda de Ropa
- * 
- * Métodos soportados:
- *   GET    → Listar todos / obtener uno por ID (?id=X)
- *   POST   → Crear producto
- *   PUT    → Actualizar producto
- *   DELETE → Eliminar producto
+ * Arrancar el servidor 
+ *   php -S localhost:8000
  */
 
-// ───────────── HEADERS ─────────────
+// Cabeceras para permitir peticiones y devolver JSON
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-// Preflight CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-// ───────────── CONEXIÓN BD ─────────────
-$host     = 'localhost';
-$dbname   = 'tienda_ropa';
-$username = 'root';
-$password = 'root';
-
+// Conexión a la base de datos
 try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-        $username,
-        $password
-    );
+    $pdo = new PDO("mysql:host=localhost;dbname=tienda_ropa;charset=utf8mb4", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['error' => 'Error de conexión: ' . $e->getMessage()]);
+    echo json_encode(["error" => "Error de conexión: " . $e->getMessage()]);
     exit();
 }
 
-// ───────────── ENRUTAMIENTO ─────────────
 $method = $_SERVER['REQUEST_METHOD'];
 
-switch ($method) {
-    case 'GET':
-        handleGet($pdo);
-        break;
-    case 'POST':
-        handlePost($pdo);
-        break;
-    case 'PUT':
-        handlePut($pdo);
-        break;
-    case 'DELETE':
-        handleDelete($pdo);
-        break;
-    default:
-        http_response_code(405);
-        echo json_encode(['error' => 'Método no permitido']);
-        break;
-}
-
-// ───────────── FUNCIONES CRUD ─────────────
-
-/**
- * GET: Obtener todos los productos o uno por ID
- */
-function handleGet($pdo)
-{
+// ── GET: Leer productos ──
+if ($method === "GET") {
     try {
-        if (isset($_GET['id'])) {
-            $stmt = $pdo->prepare("SELECT * FROM productos WHERE id = :id");
-            $stmt->execute([':id' => intval($_GET['id'])]);
+        if (isset($_GET["id"])) {
+            $stmt = $pdo->prepare("SELECT * FROM productos WHERE id = ?");
+            $stmt->execute([intval($_GET["id"])]);
             $producto = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if ($producto) {
                 echo json_encode($producto);
             } else {
                 http_response_code(404);
-                echo json_encode(['error' => 'Producto no encontrado']);
+                echo json_encode(["error" => "Producto no encontrado"]);
             }
         } else {
             $stmt = $pdo->query("SELECT * FROM productos ORDER BY id DESC");
@@ -88,160 +46,116 @@ function handleGet($pdo)
         }
     } catch (PDOException $e) {
         http_response_code(500);
-        echo json_encode(['error' => 'Error en consulta: ' . $e->getMessage()]);
+        echo json_encode(["error" => $e->getMessage()]);
     }
 }
 
-/**
- * POST: Crear un nuevo producto
- */
-function handlePost($pdo)
-{
-    $data = json_decode(file_get_contents('php://input'), true);
+// ── POST: Crear producto ──
+if ($method === "POST") {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $errores = validar($data);
 
-    $errors = validateProduct($data);
-    if (!empty($errors)) {
+    if (!empty($errores)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Datos inválidos', 'details' => $errors]);
-        return;
+        echo json_encode(["error" => implode(" | ", $errores)]);
+        exit();
     }
 
     try {
-        $stmt = $pdo->prepare(
-            "INSERT INTO productos (codigo, nombre, talla, precio, email_creador) 
-             VALUES (:codigo, :nombre, :talla, :precio, :email_creador)"
-        );
-        $stmt->execute([
-            ':codigo'        => $data['codigo'],
-            ':nombre'        => trim($data['nombre']),
-            ':talla'         => strtoupper($data['talla']),
-            ':precio'        => floatval($data['precio']),
-            ':email_creador' => trim($data['email_creador'])
-        ]);
-
+        $stmt = $pdo->prepare("INSERT INTO productos (codigo, nombre, talla, precio, email_creador) VALUES (?,?,?,?,?)");
+        $stmt->execute([$data["codigo"], trim($data["nombre"]), strtoupper($data["talla"]), floatval($data["precio"]), trim($data["email_creador"])]);
         http_response_code(201);
-        echo json_encode([
-            'message' => 'Producto creado correctamente',
-            'id'      => $pdo->lastInsertId()
-        ]);
+        echo json_encode(["message" => "Producto creado", "id" => $pdo->lastInsertId()]);
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
             http_response_code(409);
-            echo json_encode(['error' => 'El código de producto ya existe']);
+            echo json_encode(["error" => "El código ya existe"]);
         } else {
             http_response_code(500);
-            echo json_encode(['error' => 'Error al crear: ' . $e->getMessage()]);
+            echo json_encode(["error" => $e->getMessage()]);
         }
     }
 }
 
-/**
- * PUT: Actualizar un producto existente
- */
-function handlePut($pdo)
-{
-    $data = json_decode(file_get_contents('php://input'), true);
+// ── PUT: Actualizar producto ──
+if ($method === "PUT") {
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['id'])) {
+    if (!isset($data["id"])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Se requiere el ID del producto']);
-        return;
+        echo json_encode(["error" => "Falta el ID"]);
+        exit();
     }
 
-    $errors = validateProduct($data);
-    if (!empty($errors)) {
+    $errores = validar($data);
+    if (!empty($errores)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Datos inválidos', 'details' => $errors]);
-        return;
+        echo json_encode(["error" => implode(" | ", $errores)]);
+        exit();
     }
 
     try {
-        $stmt = $pdo->prepare(
-            "UPDATE productos 
-             SET codigo = :codigo, nombre = :nombre, talla = :talla, 
-                 precio = :precio, email_creador = :email_creador 
-             WHERE id = :id"
-        );
-        $stmt->execute([
-            ':id'            => intval($data['id']),
-            ':codigo'        => $data['codigo'],
-            ':nombre'        => trim($data['nombre']),
-            ':talla'         => strtoupper($data['talla']),
-            ':precio'        => floatval($data['precio']),
-            ':email_creador' => trim($data['email_creador'])
-        ]);
+        $stmt = $pdo->prepare("UPDATE productos SET codigo=?, nombre=?, talla=?, precio=?, email_creador=? WHERE id=?");
+        $stmt->execute([$data["codigo"], trim($data["nombre"]), strtoupper($data["talla"]), floatval($data["precio"]), trim($data["email_creador"]), intval($data["id"])]);
 
         if ($stmt->rowCount() > 0) {
-            echo json_encode(['message' => 'Producto actualizado correctamente']);
+            echo json_encode(["message" => "Producto actualizado"]);
         } else {
             http_response_code(404);
-            echo json_encode(['error' => 'Producto no encontrado o sin cambios']);
+            echo json_encode(["error" => "Producto no encontrado o sin cambios"]);
         }
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
             http_response_code(409);
-            echo json_encode(['error' => 'El código de producto ya existe']);
+            echo json_encode(["error" => "El código ya existe"]);
         } else {
             http_response_code(500);
-            echo json_encode(['error' => 'Error al actualizar: ' . $e->getMessage()]);
+            echo json_encode(["error" => $e->getMessage()]);
         }
     }
 }
 
-/**
- * DELETE: Eliminar un producto por ID
- */
-function handleDelete($pdo)
-{
-    $data = json_decode(file_get_contents('php://input'), true);
+// ── DELETE: Eliminar producto ──
+if ($method === "DELETE") {
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['id'])) {
+    if (!isset($data["id"])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Se requiere el ID del producto']);
-        return;
+        echo json_encode(["error" => "Falta el ID"]);
+        exit();
     }
 
     try {
-        $stmt = $pdo->prepare("DELETE FROM productos WHERE id = :id");
-        $stmt->execute([':id' => intval($data['id'])]);
+        $stmt = $pdo->prepare("DELETE FROM productos WHERE id = ?");
+        $stmt->execute([intval($data["id"])]);
 
         if ($stmt->rowCount() > 0) {
-            echo json_encode(['message' => 'Producto eliminado correctamente']);
+            echo json_encode(["message" => "Producto eliminado"]);
         } else {
             http_response_code(404);
-            echo json_encode(['error' => 'Producto no encontrado']);
+            echo json_encode(["error" => "Producto no encontrado"]);
         }
     } catch (PDOException $e) {
         http_response_code(500);
-        echo json_encode(['error' => 'Error al eliminar: ' . $e->getMessage()]);
+        echo json_encode(["error" => $e->getMessage()]);
     }
 }
 
-// ───────────── VALIDACIÓN SERVIDOR ─────────────
+// ── Función de validación ──
+function validar($data) {
+    $errores = [];
+    $tallas = ["XS", "S", "M", "L", "XL", "XXL"];
 
-/**
- * Valida los datos de un producto en el servidor
- */
-function validateProduct($data)
-{
-    $errors = [];
-    $tallasValidas = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    if (!isset($data["codigo"]) || strlen($data["codigo"]) !== 9)
+        $errores[] = "Código: exactamente 9 caracteres";
+    if (!isset($data["nombre"]) || trim($data["nombre"]) === "")
+        $errores[] = "Nombre obligatorio";
+    if (!isset($data["talla"]) || !in_array(strtoupper($data["talla"]), $tallas))
+        $errores[] = "Talla inválida";
+    if (!isset($data["precio"]) || !is_numeric($data["precio"]) || $data["precio"] <= 0)
+        $errores[] = "Precio debe ser mayor que 0";
+    if (!isset($data["email_creador"]) || !filter_var($data["email_creador"], FILTER_VALIDATE_EMAIL))
+        $errores[] = "Email inválido";
 
-    if (!isset($data['codigo']) || strlen($data['codigo']) !== 9) {
-        $errors[] = 'El código debe tener exactamente 9 caracteres';
-    }
-    if (!isset($data['nombre']) || trim($data['nombre']) === '' || strlen($data['nombre']) > 100) {
-        $errors[] = 'El nombre es obligatorio (máx. 100 caracteres)';
-    }
-    if (!isset($data['talla']) || !in_array(strtoupper($data['talla']), $tallasValidas)) {
-        $errors[] = 'Talla inválida';
-    }
-    if (!isset($data['precio']) || !is_numeric($data['precio']) || $data['precio'] <= 0) {
-        $errors[] = 'El precio debe ser un número positivo';
-    }
-    if (!isset($data['email_creador']) || !filter_var($data['email_creador'], FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Email no válido';
-    }
-
-    return $errors;
+    return $errores;
 }

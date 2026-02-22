@@ -1,0 +1,615 @@
+4. script.js — La lógica JavaScript
+Configuración
+
+JavaScript
+
+const API = "api.php";
+
+    URL de nuestra API. La guardamos en constante para no repetirla.
+
+JavaScript
+
+const TALLAS = ["XS", "S", "M", "L", "XL", "XXL"];
+
+    Array con las tallas válidas para validación.
+
+JavaScript
+
+const CAMPOS = ["codigo", "nombre", "talla", "precio", "email_creador"];
+
+    Los nombres de los campos del formulario. Lo usamos para limpiar errores recorriendo este array.
+
+Referencias al DOM
+
+JavaScript
+
+const form         = document.getElementById("form-producto");
+const inputId      = document.getElementById("producto-id");
+const btnGuardar   = document.getElementById("btn-guardar");
+const btnCancelar  = document.getElementById("btn-cancelar");
+const tbody        = document.getElementById("tbody");
+const totalSpan    = document.getElementById("total");
+const sinDatos     = document.getElementById("sin-datos");
+const cargando     = document.getElementById("cargando");
+const divMensaje   = document.getElementById("mensaje");
+
+    Guardamos referencias a todos los elementos del DOM que vamos a manipular. Es más eficiente que llamar a getElementById cada vez que los necesitemos.
+
+Evento DOMContentLoaded
+
+JavaScript
+
+document.addEventListener("DOMContentLoaded", cargarProductos);
+
+    Cuando el navegador termina de construir el DOM (el HTML está listo), ejecuta cargarProductos. Es el punto de entrada de la app.
+
+Evento submit del formulario
+
+JavaScript
+
+form.addEventListener("submit", async function(e) {
+
+    Escuchamos el evento submit del formulario. async porque dentro usaremos await. e es el objeto del evento.
+
+JavaScript
+
+    e.preventDefault();
+
+    Imprescindible. Sin esto, el formulario se enviaría de forma tradicional (recargando la página). Nosotros lo manejamos con JavaScript.
+
+JavaScript
+
+    const datos = leerFormulario();
+
+    Llamamos a nuestra función que lee todos los campos y devuelve un objeto.
+
+JavaScript
+
+    const errores = validar(datos);
+
+    Validamos los datos. Devuelve un objeto con los errores (o vacío si todo ok).
+
+JavaScript
+
+    limpiarErrores();
+
+    Quitamos los errores anteriores del formulario (bordes rojos, mensajes).
+
+JavaScript
+
+    if (Object.keys(errores).length > 0) {
+
+    Object.keys(errores) devuelve un array con los nombres de las propiedades del objeto. Si tiene alguna propiedad, significa que hay errores. Por ejemplo, Object.keys({codigo: "error"}) devuelve ["codigo"], cuyo .length es 1.
+
+JavaScript
+
+        mostrarErroresValidacion(errores);
+        return;
+
+    Mostramos los errores y salimos de la función con return. No enviamos nada al servidor.
+
+JavaScript
+
+    }
+
+JavaScript
+
+    try {
+        let resultado;
+
+    let porque el valor cambiará según sea crear o actualizar.
+
+JavaScript
+
+        if (datos.id) {
+
+    Si datos.id tiene valor (no es null, "", undefined), estamos en modo edición.
+
+JavaScript
+
+            resultado = await peticion(API, "PUT", datos);
+
+    Llamamos a nuestra función peticion con método PUT. await espera a que termine la petición antes de continuar.
+
+JavaScript
+
+        } else {
+            resultado = await peticion(API, "POST", datos);
+        }
+
+    Si no hay ID, estamos creando → método POST.
+
+JavaScript
+
+        mostrarMensaje(resultado.message, "exito");
+
+    Mostramos el mensaje de éxito que devolvió el servidor.
+
+JavaScript
+
+        limpiarFormulario();
+
+    Limpiamos el formulario para que quede listo para un nuevo producto.
+
+JavaScript
+
+        await cargarProductos();
+
+    Recargamos la tabla para que aparezca el nuevo producto o los cambios.
+
+JavaScript
+
+    } catch (error) {
+        mostrarMensaje(error.message, "error-msg");
+    }
+
+    Si algo falla (servidor, red, validación del servidor), mostramos el error.
+
+JavaScript
+
+});
+
+Evento del botón cancelar
+
+JavaScript
+
+btnCancelar.addEventListener("click", limpiarFormulario);
+
+    Al hacer clic en Cancelar, limpiamos el formulario (volvemos al modo crear).
+
+Función cargarProductos
+
+JavaScript
+
+async function cargarProductos() {
+
+    Función asíncrona que obtiene los productos del servidor.
+
+JavaScript
+
+    cargando.style.display = "block";
+
+    Mostramos el texto "Cargando...".
+
+JavaScript
+
+    sinDatos.style.display = "none";
+
+    Ocultamos el mensaje "No hay productos" (por si estaba visible).
+
+JavaScript
+
+    tbody.innerHTML = "";
+
+    Vaciamos la tabla (eliminamos filas anteriores).
+
+JavaScript
+
+    try {
+        const productos = await peticion(API, "GET");
+
+    Hacemos GET a la API. await espera la respuesta. productos es un array de objetos.
+
+JavaScript
+
+        totalSpan.textContent = "(" + productos.length + ")";
+
+    Actualizamos el contador: "(3)", "(0)", etc.
+
+JavaScript
+
+        if (productos.length === 0) {
+            sinDatos.style.display = "block";
+            return;
+        }
+
+    Si no hay productos, mostramos el mensaje y salimos.
+
+JavaScript
+
+        productos.forEach(function(p) {
+
+    forEach recorre cada producto del array. p es el producto actual.
+
+JavaScript
+
+            const fila = document.createElement("tr");
+
+    Creamos un elemento <tr> (fila de tabla).
+
+JavaScript
+
+            fila.innerHTML =
+                "<td>" + p.id + "</td>" +
+                "<td><code>" + p.codigo + "</code></td>" +
+                "<td>" + p.nombre + "</td>" +
+                "<td>" + p.talla + "</td>" +
+                "<td>" + parseFloat(p.precio).toFixed(2) + " €</td>" +
+                "<td>" + p.email_creador + "</td>" +
+                '<td>' +
+                    '<button class="btn-editar">✏️ Editar</button>' +
+                    '<button class="btn-eliminar">🗑️ Eliminar</button>' +
+                '</td>';
+
+    Rellenamos la fila con HTML. Cada <td> es una celda. parseFloat(p.precio).toFixed(2) formatea el precio con 2 decimales. Los botones de acción tienen clases para poder seleccionarlos.
+
+JavaScript
+
+            fila.querySelector(".btn-editar").addEventListener("click", function() {
+                editarProducto(p);
+            });
+
+    Buscamos el botón Editar dentro de esta fila y le ponemos un evento click. Al pulsar, llama a editarProducto pasándole el objeto completo del producto.
+
+JavaScript
+
+            fila.querySelector(".btn-eliminar").addEventListener("click", function() {
+                eliminarProducto(p.id);
+            });
+
+    Lo mismo para Eliminar, pero solo necesitamos el ID.
+
+JavaScript
+
+            tbody.appendChild(fila);
+
+    Añadimos la fila al tbody de la tabla.
+
+JavaScript
+
+        });
+    } catch (error) {
+        mostrarMensaje("Error al cargar: " + error.message, "error-msg");
+    } finally {
+        cargando.style.display = "none";
+    }
+}
+
+    finally se ejecuta siempre, haya error o no. Ocultamos el "Cargando..." en cualquier caso.
+
+Función editarProducto
+
+JavaScript
+
+function editarProducto(producto) {
+    inputId.value = producto.id;
+
+    Ponemos el ID en el campo oculto. Esto es lo que determina que estamos en modo edición.
+
+JavaScript
+
+    document.getElementById("codigo").value        = producto.codigo;
+    document.getElementById("nombre").value        = producto.nombre;
+    document.getElementById("talla").value         = producto.talla;
+    document.getElementById("precio").value        = producto.precio;
+    document.getElementById("email_creador").value = producto.email_creador;
+
+    Rellenamos cada campo del formulario con los datos del producto.
+
+JavaScript
+
+    btnGuardar.textContent  = "🔄 Actualizar";
+
+    Cambiamos el texto del botón de "Guardar" a "Actualizar".
+
+JavaScript
+
+    btnCancelar.style.display = "inline-block";
+
+    Mostramos el botón Cancelar.
+
+JavaScript
+
+    form.scrollIntoView({ behavior: "smooth" });
+
+    Hacemos scroll suave hasta el formulario para que el usuario lo vea.
+
+JavaScript
+
+}
+
+Función eliminarProducto
+
+JavaScript
+
+async function eliminarProducto(id) {
+    var confirmar = confirm("¿Seguro que quieres eliminar este producto?");
+
+    confirm() muestra un cuadro de diálogo nativo del navegador con Aceptar/Cancelar. Devuelve true si acepta, false si cancela.
+
+JavaScript
+
+    if (!confirmar) return;
+
+    Si canceló, salimos de la función. No borramos nada.
+
+JavaScript
+
+    try {
+        var resultado = await peticion(API, "DELETE", { id: id });
+
+    Hacemos DELETE enviando solo el ID.
+
+JavaScript
+
+        mostrarMensaje(resultado.message, "exito");
+
+    Mostramos "Producto eliminado".
+
+JavaScript
+
+        if (parseInt(inputId.value) === id) {
+            limpiarFormulario();
+        }
+
+    Si justo estábamos editando el producto que acabamos de eliminar, limpiamos el formulario. parseInt() convierte el string del input a número para poder comparar con ===.
+
+JavaScript
+
+        await cargarProductos();
+
+    Recargamos la tabla.
+
+JavaScript
+
+    } catch (error) {
+        mostrarMensaje("Error al eliminar: " + error.message, "error-msg");
+    }
+}
+
+Función peticion (genérica)
+
+JavaScript
+
+async function peticion(url, method, body) {
+
+    Función reutilizable para cualquier petición HTTP. Recibe la URL, el método y opcionalmente un body.
+
+JavaScript
+
+    var opciones = {
+        method: method,
+        headers: { "Content-Type": "application/json" }
+    };
+
+    Configuramos las opciones de fetch. La cabecera dice que enviamos JSON.
+
+JavaScript
+
+    if (body && method !== "GET") {
+        opciones.body = JSON.stringify(body);
+    }
+
+    Solo añadimos body si hay datos Y no es GET (GET no lleva body). JSON.stringify() convierte el objeto JavaScript a texto JSON.
+
+JavaScript
+
+    var response = await fetch(url, opciones);
+
+    fetch() hace la petición HTTP. await espera a que el servidor responda. response es el objeto de respuesta.
+
+JavaScript
+
+    var data = await response.json();
+
+    response.json() lee el cuerpo de la respuesta y lo parsea como JSON. También es asíncrono, por eso el await.
+
+JavaScript
+
+    if (!response.ok) {
+
+    response.ok es true si el código HTTP está entre 200-299. Si es 400, 404, 500, etc., es false.
+
+JavaScript
+
+        throw new Error(data.error || "Error del servidor");
+
+    throw new Error() lanza una excepción que será capturada por el catch de quien llamó a esta función. Usamos el mensaje de error del servidor si existe.
+
+JavaScript
+
+    }
+    return data;
+}
+
+    Si todo fue bien, devolvemos los datos parseados.
+
+Función validar
+
+JavaScript
+
+function validar(datos) {
+    var errores = {};
+
+    Objeto vacío donde acumulamos errores como { campo: "mensaje" }.
+
+JavaScript
+
+    if (!datos.codigo || datos.codigo.trim() === "") {
+        errores.codigo = "El código es obligatorio";
+    } else if (datos.codigo.length !== 9) {
+        errores.codigo = "Debe tener exactamente 9 caracteres (tiene " + datos.codigo.length + ")";
+    } else if (!/^[a-zA-Z0-9]{9}$/.test(datos.codigo)) {
+        errores.codigo = "Solo letras y números";
+    }
+
+    Valida el código en 3 niveles:
+
+        Que no esté vacío
+        Que tenga exactamente 9 caracteres
+        Que solo contenga letras y números (regex)
+
+    La regex /^[a-zA-Z0-9]{9}$/:
+
+        ^ → inicio del string
+        [a-zA-Z0-9] → una letra o número
+        {9} → exactamente 9 veces
+        $ → fin del string
+        .test() → devuelve true/false
+
+JavaScript
+
+    if (!datos.nombre || datos.nombre.trim() === "") {
+        errores.nombre = "El nombre es obligatorio";
+    } else if (datos.nombre.length > 100) {
+        errores.nombre = "Máximo 100 caracteres";
+    }
+
+    Nombre: obligatorio y máximo 100 caracteres.
+
+JavaScript
+
+    if (!datos.talla || datos.talla === "") {
+        errores.talla = "Selecciona una talla";
+    } else if (TALLAS.indexOf(datos.talla.toUpperCase()) === -1) {
+        errores.talla = "Talla no válida";
+    }
+
+    indexOf() busca el valor en el array. Devuelve -1 si no lo encuentra.
+
+JavaScript
+
+    if (datos.precio === "" || datos.precio === null) {
+        errores.precio = "El precio es obligatorio";
+    } else if (isNaN(parseFloat(datos.precio)) || parseFloat(datos.precio) <= 0) {
+        errores.precio = "Debe ser un número mayor que 0";
+    }
+
+    isNaN() → "is Not a Number". Comprueba que el valor convertido a float sea un número válido y mayor que 0.
+
+JavaScript
+
+    if (!datos.email_creador || datos.email_creador.trim() === "") {
+        errores.email_creador = "El email es obligatorio";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(datos.email_creador)) {
+        errores.email_creador = "Formato de email no válido";
+    }
+
+    Regex del email /^[^\s@]+@[^\s@]+\.[^\s@]+$/:
+
+        [^\s@]+ → uno o más caracteres que NO sean espacio ni @
+        @ → la arroba literal
+        [^\s@]+ → dominio
+        \. → un punto literal
+        [^\s@]+ → extensión (com, es, etc.)
+
+JavaScript
+
+    return errores;
+}
+
+    Devuelve el objeto. Si está vacío {} → todo correcto.
+
+Funciones de utilidad del DOM
+
+JavaScript
+
+function leerFormulario() {
+    return {
+        id:            inputId.value || null,
+        codigo:        document.getElementById("codigo").value.trim(),
+        nombre:        document.getElementById("nombre").value.trim(),
+        talla:         document.getElementById("talla").value,
+        precio:        document.getElementById("precio").value,
+        email_creador: document.getElementById("email_creador").value.trim()
+    };
+}
+
+    Lee cada campo y devuelve un objeto. trim() quita espacios al inicio/final. inputId.value || null → si está vacío devuelve null (modo crear).
+
+JavaScript
+
+function limpiarFormulario() {
+    form.reset();
+
+    reset() es un método nativo de los formularios que restaura todos los campos a sus valores iniciales.
+
+JavaScript
+
+    inputId.value = "";
+
+    Limpiamos el ID oculto (volvemos a modo crear).
+
+JavaScript
+
+    btnGuardar.textContent = "💾 Guardar";
+    btnCancelar.style.display = "none";
+
+    Restauramos el texto del botón y ocultamos Cancelar.
+
+JavaScript
+
+    limpiarErrores();
+}
+
+JavaScript
+
+function mostrarErroresValidacion(errores) {
+    for (var campo in errores) {
+
+    for...in recorre las propiedades de un objeto. campo toma valores como "codigo", "nombre", etc.
+
+JavaScript
+
+        var input = document.getElementById(campo);
+        var span  = document.getElementById("error-" + campo);
+
+    Buscamos el input y su span de error correspondiente.
+
+JavaScript
+
+        if (input) input.classList.add("invalido");
+
+    classList.add() añade la clase CSS "invalido" al input (borde rojo).
+
+JavaScript
+
+        if (span)  span.textContent = errores[campo];
+
+    Escribimos el mensaje de error en el span.
+
+JavaScript
+
+    }
+}
+
+JavaScript
+
+function limpiarErrores() {
+    CAMPOS.forEach(function(campo) {
+        var input = document.getElementById(campo);
+        var span  = document.getElementById("error-" + campo);
+        if (input) input.classList.remove("invalido");
+        if (span)  span.textContent = "";
+    });
+}
+
+    Recorremos todos los campos, quitamos la clase invalido y vaciamos los mensajes de error.
+
+JavaScript
+
+function mostrarMensaje(texto, tipo) {
+    divMensaje.textContent = texto;
+
+    Ponemos el texto en el div de mensajes.
+
+JavaScript
+
+    divMensaje.className   = "mensaje " + tipo;
+
+    Establecemos las clases: "mensaje exito" o "mensaje error-msg". Esto activa los estilos CSS correspondientes (verde o rojo).
+
+JavaScript
+
+    divMensaje.style.display = "block";
+
+    Hacemos visible el div.
+
+JavaScript
+
+    setTimeout(function() {
+        divMensaje.style.display = "none";
+    }, 3000);
+}
+
+    setTimeout ejecuta una función después de X milisegundos. Aquí ocultamos el mensaje tras 3 segundos (3000ms) automáticamente.
