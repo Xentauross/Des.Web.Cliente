@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa - CRUD</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="contenedor">
+        <h1>Gestión de Productos</h1>
+
+        <!-- ══ FORMULARIO ══ -->
+        <form id="form-producto">
+            <input type="hidden" id="producto-id">
+
+            <div class="form-grupo">
+                <label for="codigo">Código (9 caracteres)</label>
+                <input type="text" id="codigo" maxlength="9" placeholder="123456789">
+                <span class="error" id="error-codigo"></span>
+            </div>
+
+            <div class="form-grupo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" maxlength="100" placeholder="Camiseta Básica">
+                <span class="error" id="error-nombre"></span>
+            </div>
+
+            <div class="form-grupo">
+                <label for="talla">Talla</label>
+                <select id="talla">
+                    <option value="">Seleccionar...</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+                <span class="error" id="error-talla"></span>
+            </div>
+
+            <div class="form-grupo">
+                <label for="precio">Precio (€)</label>
+                <input type="number" id="precio" step="0.01" min="0.01" placeholder="15.50">
+                <span class="error" id="error-precio"></span>
+            </div>
+
+            <div class="form-grupo">
+                <label for="email_creador">Email del creador</label>
+                <input type="email" id="email_creador" placeholder="user@mail.com">
+                <span class="error" id="error-email_creador"></span>
+            </div>
+
+            <div class="form-botones">
+                <button type="submit" id="btn-guardar">Guardar</button>
+                <button type="button" id="btn-cancelar" style="display:none;">Cancelar</button>
+            </div>
+        </form>
+
+        <!-- ══ MENSAJE DE ESTADO ══ -->
+        <div id="mensaje" class="mensaje" style="display:none;"></div>
+
+        <div
+            style="display: flex; justify-content: space-between; margin-top: 25px; padding: 15px; background: #eef2f5; border-radius: 6px;">
+            <div>
+                <label for="buscador"><strong>Buscar producto:</strong></label>
+                <input type="text" id="buscador" placeholder="Escribe un nombre..."
+                    style="padding: 6px; margin-left: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div>
+                <button type="button" id="btn-ordenar"
+                    style="padding: 6px 15px; background: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    Ordenar por Precio
+                </button>
+            </div>
+        </div>
+
+        <h2 style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Lista de Productos <span id="total">(0)</span></span>
+            <span style="color: #27ae60; font-size: 0.9em;">Valor del inventario: <strong id="total-dinero">0.00
+                    €</strong></span>
+        </h2>
+
+        <table id="tabla-productos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Talla</th>
+                    <th>Precio</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+
+        <p id="sin-datos" style="display:none;">No hay productos registrados.</p>
+        <p id="cargando" style="display:none;">Cargando...</p>
+    </div>
+
+    <!--Aqui le decimos que en el js trabajamos con modulos-->
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
