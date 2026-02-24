@@ -106,3 +106,24 @@ Datos recibidos: Array
 )
 
 -----------------------------------
+Fecha: 2026-02-24 10:09:53
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-24 10:09:55
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-24 10:09:55
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------

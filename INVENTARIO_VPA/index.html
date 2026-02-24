@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Ropa - CRUD</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -13,7 +13,28 @@
     <div class="contenedor">
         <h1>Gestión de Productos</h1>
 
-        <form id="form-producto">
+        <nav class="menu">
+            <button id="btnCargar">Cargar datos</button>
+            <button id="btnNuevo">Nuevo Producto</button>
+            <button type="button" id="btn-ocultar"">Ocultar Formulario</button>
+            <button id= " btnLimpiar">Limpiar Pantalla</button>
+            <div class="form-grupo">
+                <label for="tallaje">Talla</label>
+                <select id="tallaje">
+                    <option value="">Todas</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+                <span class="error" id="error-talla"></span>
+            </div>
+        </nav>
+
+        <!-- ══ FORMULARIO ══ -->
+        <form style="display:none;" id="form-producto">
             <input type="hidden" id="producto-id">
 
             <div class="form-grupo">
@@ -60,28 +81,14 @@
             </div>
         </form>
 
-        <div id="mensaje" class="mensaje" style="display:none;"></div>
-
-        <div class="herramientas">
-            <div class="buscador-grupo">
-                <label for="buscador"><strong>Buscar producto:</strong></label>
-                <input type="text" id="buscador" placeholder="Escribe un nombre...">
-            </div>
-
-            <div class="botones-extra">
-                <button type="button" id="btn-ordenar">Ordenar por Precio</button>
-                <button type="button" id="btn-descargar">Exportar JSON</button>
-                <button type="button" id="btn-cargar">Importar JSON</button>
-                <input type="file" id="input-archivo" accept=".json" style="display: none;">
-            </div>
+        <!-- ══ MENSAJE DE ESTADO ══ -->
+        <div id=" mensaje" class="mensaje" style="display:none;">
         </div>
 
-        <h2>
-            <span>Lista de Productos <span id="total">(0)</span></span>
-            <span class="totales">Valor del inventario: <strong id="total-dinero">0.00 €</strong></span>
-        </h2>
+        <!-- ══ TABLA ══ -->
+        <h2>Lista de Productos <span id="total">(0)</span></h2>
 
-        <table id="tabla-productos">
+        <table style="display:none;" id="tabla-productos">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -102,6 +109,7 @@
         <p id="cargando" style="display:none;">Cargando...</p>
     </div>
 
+    <!--Aqui le decimos que en el js trabajamos con modulos-->
     <script type="module" src="main.js"></script>
 </body>
 

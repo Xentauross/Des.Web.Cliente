@@ -9,8 +9,30 @@ const cargando = document.getElementById("cargando")
 const sinDatos = document.getElementById("sin-datos")
 const totalSpan = document.getElementById("total")
 const divMensaje = document.getElementById("mensaje")
-// Guardaremos aquí los productos para poder filtrarlos y ordenarlos
-let listaProductos = [];
+const nuevoProducto = document.getElementById("form-producto")
+
+
+// LLama a la carga de productos
+btnCargar.addEventListener('click', cargarProductos)
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("tabla-productos").style.display = "block"
+})
+
+//Muestra el formulario
+document.getElementById("btnNuevo").addEventListener("click", () => {
+    nuevoProducto.style.display = "block"
+})
+
+//Ocultar
+document.getElementById("btn-ocultar").addEventListener("click", () => {
+    nuevoProducto.style.display = "none"
+})
+
+//Limpia la pantalla
+document.getElementById("btnLimpiar").addEventListener("click", () => {
+    tbody.innerHTML = ""
+})
+
 
 // Fucion que que pide los datos al mensajero y se los da al molde para pintar la tabla
 // deve de ser async ya que puede tardar la repuesta en llegar
@@ -28,15 +50,8 @@ async function cargarProductos() {
         // Guardamos en una constate lo que nos llega de nuestra funcion creada en el api
         const productos = await obtenerProductos()
 
-        // Guardamos los datos en nuestra lista global
-        listaProductos = productos
-
-        //Calcular total
-        const totalDinero = listaProductos.reduce((suma, p) => suma + parseFloat(p.precio), 0);
-        document.getElementById("total-dinero").textContent = `${totalDinero.toFixed(2)} €`;
-
         //Actualizamos el numoer que sale al lado del titulo LIsta de productos con .length
-        totalSpan.textContent = `(${productos.length})`;
+        totalSpan.textContent = `(${productos.length})`
 
         // Si está vacia la base de datos la longitud del array será 0
         if (productos.length === 0) {
@@ -285,151 +300,3 @@ function mostrarMensaje(texto, tipo) {
         divMensaje.style.display = "none"
     }, 3000)
 }
-
-// Evento para el botón de Cancelar que estaba escondido
-document.getElementById("btn-cancelar").addEventListener("click", limpiarFormulario)
-
-// LLama a la carga de productos
-document.addEventListener("DOMContentLoaded", cargarProductos)
-
-// ==========================================
-// EVENTOS DE LAS FUNCIONALIDADES EXTRA 
-// ==========================================
-
-// BUSCADOR EN TIEMPO REAL
-document.getElementById("buscador").addEventListener("input", (e) => {
-    // Leemos lo que el usuario ha escrito y lo pasamos a minúsculas
-    const textoBuscador = e.target.value.toLowerCase()
-
-    // Filtramos nuestra lista global
-    const filtrados = listaProductos.filter(p => p.nombre.toLowerCase().includes(textoBuscador))
-
-    // Volvemos a generar el HTML solo con los filtrados
-    let htmlFilas = ""
-    filtrados.forEach(producto => {
-        htmlFilas += crearFilaProducto(producto)
-    })
-
-    // Inyectamos en la tabla y volvemos a activar los botones (Editar/Eliminar)
-    document.getElementById("tbody").innerHTML = htmlFilas
-    asignarEventosBotones(filtrados)
-})
-
-
-//  ORDENAR LA TABLA POR PRECIO
-// Variable para alternar el orden
-let ordenAscendente = true
-
-
-document.getElementById("btn-ordenar").addEventListener("click", () => {
-    // Ordenamos la lista global
-    if (ordenAscendente) {
-        // Menor a mayor
-        listaProductos.sort((a, b) => parseFloat(a.precio) - parseFloat(b.precio))
-    } else {
-        // Mayor a menor
-        listaProductos.sort((a, b) => parseFloat(b.precio) - parseFloat(a.precio))
-    }
-    // Invertimos para el siguiente clic
-    ordenAscendente = !ordenAscendente
-
-    //Volvemos a generar el HTML con la lista ya ordenada
-    let htmlFilas = ""
-    listaProductos.forEach(producto => {
-        htmlFilas += crearFilaProducto(producto)
-    })
-
-    // Inyectamos en la tabla y volvemos a activar los botones
-    document.getElementById("tbody").innerHTML = htmlFilas
-    asignarEventosBotones(listaProductos)
-})
-
-
-// ==========================================
-// EXTRA 4: DESCARGAR (EXPORTAR) JSON
-// ==========================================
-document.getElementById("btn-descargar").addEventListener("click", () => {
-    // Convertimos nuestra lista de productos (array) a un texto JSON bonito (el '2' es para los espacios)
-    const datosJSON = JSON.stringify(listaProductos, null, 2);
-
-    // Creamos un "Blob". Es la forma que tiene JS de crear archivos de la nada.
-    const archivoBlob = new Blob([datosJSON], { type: "application/json" });
-
-    // Creamos una URL temporal en la memoria del navegador que apunta a nuestro archivo
-    const url = URL.createObjectURL(archivoBlob);
-
-    // Creamos una etiqueta <a> invisible, le ponemos la URL, y forzamos un clic
-    const enlaceOculto = document.createElement("a");
-    enlaceOculto.href = url
-    // El nombre con el que se guardará
-    enlaceOculto.download = "mis_productos.json"
-    // Simulamos que el usuario hizo clic
-    enlaceOculto.click()
-    // Limpiamos la memoria
-    URL.revokeObjectURL(url)
-});
-
-// ==========================================
-// EXTRA 5: CARGAR (IMPORTAR) JSON
-// ==========================================
-const btnCargar = document.getElementById("btn-cargar")
-const inputArchivo = document.getElementById("input-archivo")
-
-// Cuando hacemos clic en el botón morado bonito, le hacemos clic al input invisible y feo
-btnCargar.addEventListener("click", () => inputArchivo.click())
-
-// Este evento salta cuando el usuario ya ha elegido un archivo de su ordenador
-inputArchivo.addEventListener("change", (e) => {
-    // Cogemos el primer archivo seleccionado
-    const archivo = e.target.files[0]
-    // Si canceló la ventana, no hacemos nada
-    if (!archivo) return
-
-    // Usamos FileReader, la herramienta de JS para leer archivos del disco duro
-    const lector = new FileReader()
-
-    lector.onload = async (evento) => {
-        try {
-            // Traducimos el texto a JavaScript
-            const productosNuevos = JSON.parse(evento.target.result);
-
-            // Contadores para saber cómo ha ido
-            let importados = 0;
-            let fallidos = 0;
-
-            // Bucle for...of
-            for (const producto of productosNuevos) {
-                delete producto.id; // Borramos el ID antiguo
-
-                try {
-                    // Intentamos guardar EL PRODUCTO ACTUAL
-                    await crearProducto(producto);
-                    importados++; // Si va bien, sumamos 1
-                } catch (err) {
-                    // Si falla (ej. código repetido), lo atrapamos AQUÍ y el bucle sigue
-                    console.warn(`Falló el producto ${producto.codigo}:`, err.message);
-                    fallidos++;
-                }
-            }
-
-            // Mostramos el resultado final
-            if (fallidos > 0) {
-                mostrarMensaje(`Se importaron ${importados}. Fallaron ${fallidos} (quizás repetidos)`, "error-msg");
-            } else {
-                mostrarMensaje(`¡${importados} productos importados con éxito!`, "exito");
-            }
-
-            // Recargamos la tabla
-            await cargarProductos();
-
-        } catch (error) {
-            mostrarMensaje("Error fatal: El archivo JSON está corrupto.", "error-msg");
-            console.error(error);
-        } finally {
-            inputArchivo.value = "";
-        }
-    };
-
-    // Le decimos al lector que empiece a leer el archivo como si fuera texto
-    lector.readAsText(archivo)
-});
