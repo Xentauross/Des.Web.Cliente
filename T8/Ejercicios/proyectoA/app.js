@@ -6,10 +6,7 @@ const cabecera = document.getElementById("cabeceraTabla");
 const cuerpoTabla = document.getElementById("table");
 
 formulario.addEventListener("submit", async function (e) {
-
-    // 1. Evitamos que el navegador recargue la página
-    e.preventDefault();
-
+    e.preventDefault(); // 1. Evitamos que el navegador recargue la página
     // UX: Feedback visual (Deshabilitar botón)
     btnEnviar.disabled = true;
     btnEnviar.innerText = "Enviando...";

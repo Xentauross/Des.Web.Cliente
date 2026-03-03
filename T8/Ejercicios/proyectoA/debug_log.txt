@@ -106,14 +106,80 @@ Datos recibidos: Array
 )
 
 -----------------------------------
-Fecha: 2026-02-26 13:02:36
+Fecha: 2026-02-24 10:09:53
 Método: GET
 Datos recibidos: Array
 (
 )
 
 -----------------------------------
-Fecha: 2026-02-26 13:02:42
+Fecha: 2026-02-24 10:09:55
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-24 10:09:55
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:48:34
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:48:37
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:48:54
+Método: POST
+Datos recibidos: Array
+(
+    [nombre] => Manolo
+    [correo] => malolo@gmail.com
+    [movil] => 688899985
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:49:16
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:49:17
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:49:17
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:52:42
+Método: GET
+Datos recibidos: Array
+(
+)
+
+-----------------------------------
+Fecha: 2026-02-26 12:52:50
 Método: POST
 Datos recibidos: Array
 (
@@ -123,21 +189,7 @@ Datos recibidos: Array
 )
 
 -----------------------------------
-Fecha: 2026-02-26 13:02:43
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:02:43
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:02:44
+Fecha: 2026-02-26 12:53:23
 Método: POST
 Datos recibidos: Array
 (
@@ -147,21 +199,21 @@ Datos recibidos: Array
 )
 
 -----------------------------------
-Fecha: 2026-02-26 13:03:41
+Fecha: 2026-02-26 12:53:24
 Método: GET
 Datos recibidos: Array
 (
 )
 
 -----------------------------------
-Fecha: 2026-02-26 13:05:14
+Fecha: 2026-02-26 12:53:25
 Método: GET
 Datos recibidos: Array
 (
 )
 
 -----------------------------------
-Fecha: 2026-02-26 13:05:15
+Fecha: 2026-02-26 12:53:25
 Método: POST
 Datos recibidos: Array
 (
@@ -171,116 +223,12 @@ Datos recibidos: Array
 )
 
 -----------------------------------
-Fecha: 2026-02-26 13:05:22
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:05:23
-Método: POST
-Datos recibidos: Array
-(
-    [nombre] => camisa
-    [correo] => mm@g.com
-    [movil] => 688899985
-)
-
------------------------------------
-Fecha: 2026-02-26 13:06:45
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:06:53
-Método: POST
-Datos recibidos: Array
-(
-    [nombre] => camisa
-    [correo] => mm@g.com
-    [movil] => 688899985
-)
-
------------------------------------
-Fecha: 2026-02-26 13:10:38
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:10:49
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:10:55
-Método: POST
-Datos recibidos: Array
-(
-    [nombre] => camisa
-    [correo] => mm@g.com
-    [movil] => 688899985
-)
-
------------------------------------
-Fecha: 2026-02-26 13:10:56
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:10:57
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:14:57
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:15:08
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:15:13
-Método: POST
-Datos recibidos: Array
-(
-    [nombre] => camisa
-    [correo] => mm@g.com
-    [movil] => 688899985
-)
-
------------------------------------
-Fecha: 2026-02-26 13:18:22
-Método: GET
-Datos recibidos: Array
-(
-)
-
------------------------------------
-Fecha: 2026-02-26 13:18:30
-Método: POST
-Datos recibidos: Array
-(
-    [nombre] => camisa
-    [correo] => mm@g.com
-    [movil] => 665652168
-)
-
------------------------------------
+Fecha: 2026-02-26 12:59:54 | Método: GET
+Fecha: 2026-02-26 13:00:01 | Método: GET
+Fecha: 2026-02-26 13:00:04 | Método: POST
+Fecha: 2026-02-26 13:00:05 | Método: GET
+Fecha: 2026-02-26 13:00:06 | Método: GET
+Fecha: 2026-02-26 13:00:07 | Método: POST
+Fecha: 2026-02-26 13:00:07 | Método: POST
+Fecha: 2026-02-26 13:00:17 | Método: GET
+Fecha: 2026-02-26 13:00:18 | Método: GET
