@@ -1,0 +1,95 @@
+.main-contenedor {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  background-color: #f4f4f4;
+  min-height: 60vh;
+}
+
+/* Estilo para cada tarjeta individual */
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  width: 180px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+
+}
+
+.card h2 {
+  color: #333;
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.card button {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.card button:hover {
+  background-color: #535bf2;
+}
+
+
+/* Estilo para cada tarjeta individual */
+.contador-caja {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  width: 180px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.contador-caja:hover {
+  transform: translateY(-5px);
+
+}
+
+.contador-caja .menos {
+  background-color: #ee7d7d;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background 0.3s;
+}
+
+.contador-caja .menos:hover {
+  background-color: #ee3131;
+}
+
+.contador-caja .mas {
+  background-color: #7dee90;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background 0.3s;
+}
+
+.contador-caja .mas:hover {
+  background-color: #31ee60;
+}
